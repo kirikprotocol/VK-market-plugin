@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+
+  <section name="vk.market.plugin">
+    <section name="vk.market.api">
+      <param name="client.id" type="string"></param>
+      <param name="client.secret" type="string"></param>
+    </section>
+
+    <section name="memory.data.store">
+      <param name="clear.data.timeout.min" type="int">1440</param>
+    </section>
+  </section>
+
+</config>
