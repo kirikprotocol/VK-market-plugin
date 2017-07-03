@@ -23,7 +23,7 @@
   <!-- Servlet -->
   <servlet>
     <servlet-name>vkMarketServlet</servlet-name>
-    <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VKMarketServlet</servlet-class>
+    <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkMarketServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>

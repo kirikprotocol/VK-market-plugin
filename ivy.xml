@@ -9,7 +9,16 @@
 
   <dependencies>
     <!-- VK Market API -->
-    <!-- todo: add libs -->
+    <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.2" conf="prod->default"/>
+    <dependency org="commons-io" name="commons-io" rev="2.5" conf="prod->default"/>
+    <dependency org="org.apache.commons" name="commons-collections4" rev="4.1" conf="prod->default"/>
+    <dependency org="org.apache.commons" name="commons-lang3" rev="3.5" conf="prod->default"/>
+    <dependency org="com.google.code.gson" name="gson" rev="2.8.1" conf="prod->default"/>
+    <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.6" conf="prod->default"/>
+    <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.3" conf="prod->default"/>
+    <dependency org="org.slf4j" name="slf4j-api" rev="1.7.22" conf="prod->default"/>
+    <dependency org="commons-logging" name="commons-logging" rev="1.2" conf="prod->default"/>
+    <dependency org="com.vk.api" name="sdk" rev="0.5.3" conf="prod->default"/>
 
     <!-- Utils -->
     <dependency org="mobi.eyeline.util.extutils" name="generalutils" rev="1.38.0" conf="prod->prod"/>

@@ -6,5 +6,8 @@ import javax.servlet.http.HttpServlet;
  * author: Denis Enenko
  * date: 27.06.17
  */
-public class VKMarketServlet extends HttpServlet {
+public class VkMarketServlet extends HttpServlet {
+
+
+
 }
