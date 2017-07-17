@@ -7,19 +7,17 @@ package com.eyelinecom.whoisd.sads2.vk.market.service.market;
 public class Item {
 
   private final Integer id;
-  private final String category;
+  private final Category category;
   private final String name;
-  private final String price;
-  private final String currency;
+  private final Price price;
   private final String mainPhotoUrl;
 
 
-  Item(Integer id, String category, String name, String price, String currency, String mainPhotoUrl) {
+  Item(Integer id, Category category, String name, Price price, String mainPhotoUrl) {
     this.id = id;
     this.category = category;
     this.name = name;
     this.price = price;
-    this.currency = currency;
     this.mainPhotoUrl = mainPhotoUrl;
   }
 
@@ -27,7 +25,7 @@ public class Item {
     return id;
   }
 
-  public String getCategory() {
+  public Category getCategory() {
     return category;
   }
 
@@ -35,12 +33,8 @@ public class Item {
     return name;
   }
 
-  public String getPrice() {
+  public Price getPrice() {
     return price;
-  }
-
-  public String getCurrency() {
-    return currency;
   }
 
   public String getMainPhotoUrl() {

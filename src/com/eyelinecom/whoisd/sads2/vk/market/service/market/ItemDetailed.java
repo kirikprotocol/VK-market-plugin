@@ -12,8 +12,8 @@ public class ItemDetailed extends Item {
   private final List<String> extraPhotoUrls;
 
 
-  ItemDetailed(Integer id, String category, String name, String description, String price, String currency, String mainPhotoUrl, List<String> extraPhotoUrls) {
-    super(id, category, name, price, currency, mainPhotoUrl);
+  ItemDetailed(Integer id, Category category, String name, String description, Price price, String mainPhotoUrl, List<String> extraPhotoUrls) {
+    super(id, category, name, price, mainPhotoUrl);
     this.description = description;
     this.extraPhotoUrls = extraPhotoUrls;
   }

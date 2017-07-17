@@ -29,15 +29,15 @@ public class VkMarketService {
     this.actor = new UserActor(userId, accessToken);
   }
 
-  public Set<String> getCategories() throws VkMarketServiceException {
-    Set<String> categories = new HashSet<>();
+  public Set<Category> getCategories() throws VkMarketServiceException {
+    Set<Category> categories = new HashSet<>();
 
     try {
       GetResponse response = vk.market().get(actor, actor.getId()).execute();
 
       for(MarketItem item : response.getItems()) {
         MarketCategory category = item.getCategory();
-        categories.add(category.getName());
+        categories.add(new Category(category.getId(), category.getName()));
       }
     }
     catch(Exception e) {
@@ -56,10 +56,9 @@ public class VkMarketService {
       for(MarketItem item : response.getItems()) {
         items.add(new Item(
             item.getId(),
-            item.getCategory().getName(),
+            new Category(item.getCategory().getId(), item.getCategory().getName()),
             item.getTitle(),
-            item.getPrice().getAmount(),
-            item.getPrice().getCurrency().getName(),
+            new Price(item.getPrice().getAmount(), item.getPrice().getCurrency().getName(), item.getPrice().getText()),
             item.getThumbPhoto()
         ));
       }
@@ -71,22 +70,21 @@ public class VkMarketService {
     return items;
   }
 
-  public List<Item> getItemsByCategory(String category) throws VkMarketServiceException {
+  public List<Item> getItemsByCategory(int categoryId) throws VkMarketServiceException {
     List<Item> items = new ArrayList<>();
 
     try {
       GetResponse response = vk.market().get(actor, actor.getId()).execute();
 
       for(MarketItem item : response.getItems()) {
-        if(!item.getCategory().getName().equals(category))
+        if(!item.getCategory().getId().equals(categoryId))
           continue;
 
         items.add(new Item(
             item.getId(),
-            item.getCategory().getName(),
+            new Category(item.getCategory().getId(), item.getCategory().getName()),
             item.getTitle(),
-            item.getPrice().getAmount(),
-            item.getPrice().getCurrency().getName(),
+            new Price(item.getPrice().getAmount(), item.getPrice().getCurrency().getName(), item.getPrice().getText()),
             item.getThumbPhoto()
         ));
       }
@@ -98,9 +96,9 @@ public class VkMarketService {
     return items;
   }
 
-  public ItemDetailed getItemById(String itemId) throws VkMarketServiceException {
+  public ItemDetailed getItemById(int itemId) throws VkMarketServiceException {
     try {
-      GetByIdExtendedResponse response = vk.market().getByIdExtended(actor, itemId).execute();
+      GetByIdExtendedResponse response = vk.market().getByIdExtended(actor, itemId + "").execute();
       if(response.getCount() == 0)
         return null;
 
@@ -108,11 +106,10 @@ public class VkMarketService {
 
       return new ItemDetailed(
           item.getId(),
-          item.getCategory().getName(),
+          new Category(item.getCategory().getId(), item.getCategory().getName()),
           item.getTitle(),
           item.getDescription(),
-          item.getPrice().getAmount(),
-          item.getPrice().getCurrency().getName(),
+          new Price(item.getPrice().getAmount(), item.getPrice().getCurrency().getName(), item.getPrice().getText()),
           item.getThumbPhoto(),
           getExtraPhotos(item)
       );

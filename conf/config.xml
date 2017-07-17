@@ -4,6 +4,9 @@
   <section name="vk.market.plugin">
     <section name="db">
     </section>
+
+    <section name="mail">
+    </section>
   </section>
 
 </config>
