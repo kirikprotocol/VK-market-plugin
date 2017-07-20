@@ -17,6 +17,8 @@ import java.util.*;
 public abstract class Renderer {
 
   private final static Logger log = Logger.getLogger("VK_MARKET_PLUGIN");
+  //TODO
+  private final static String PUSH_URL = "%s?service=%s&user_id=%s&protocol=%s&scenario=xmlpush&document=%s";
   private final ResourceBundle bundle;
 
 
@@ -153,7 +155,7 @@ public abstract class Renderer {
     return path.contains("?") ? path + "&amp;" + query.toString() : path + "?" + query.toString();
   }
 
-  protected static void sendResponse(HttpServletResponse response, List<String> xmlPages) throws IOException {
+  protected static void sendResponse(HttpServletResponse response, RequestParameters requestParams, List<String> xmlPages) throws IOException {
     String xmlPage = xmlPages.get(0);
 
     if(log.isInfoEnabled())
@@ -170,16 +172,29 @@ public abstract class Renderer {
 
     if(xmlPages.size() > 1) {
       for(int i = 1; i < xmlPages.size(); i++) {
-        sendPush(xmlPages.get(i));
+        sendPush(xmlPages.get(i), requestParams);
       }
     }
   }
 
-  private static void sendPush(String xmlPage) {
+  private static void sendPush(String xmlPage, RequestParameters requestParams) {
     if(log.isInfoEnabled())
       log.info("Send push: " + xmlPage);
 
-    //todo Implementing PUSH: https://confluence.eyeline.mobi/pages/viewpage.action?pageId=18776267
+    //TODO: добавить push если получится сохранить работоспосбность inline-кнопок, при вызове сценария xmlPush. Сейчас, видимо, сессия ломается.
+//    try {
+//      String encodedXmlPage = URLEncoder.encode(xmlPage, StandardCharsets.UTF_8.name());
+//      String pushUrl = String.format(PUSH_URL, WebContext.getPushUrl(), requestParams.getServiceId(), requestParams.getUserId(), requestParams.getProtocol(), encodedXmlPage);
+//      URL url = new URL(pushUrl);
+//      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//      int responseCode = connection.getResponseCode();
+//
+//      if(responseCode != 200)
+//        log.error("Unable push message. User ID: " + requestParams.getUserId() + ". Service: " + requestParams.getServiceId() + ". Protocol: " + requestParams.getProtocol());
+//
+//    } catch (IOException ex) {
+//      log.error("Unable push message", ex);
+//    }
   }
 
 }

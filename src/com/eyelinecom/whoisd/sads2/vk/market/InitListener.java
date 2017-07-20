@@ -2,6 +2,7 @@ package com.eyelinecom.whoisd.sads2.vk.market;
 
 import com.eyeline.utils.config.ConfigException;
 import com.eyeline.utils.config.xml.XmlConfig;
+import com.eyeline.utils.config.xml.XmlConfigSection;
 import com.eyelinecom.whoisd.sads2.vk.market.service.Services;
 import com.eyelinecom.whoisd.sads2.vk.market.service.ServicesException;
 import org.apache.log4j.PropertyConfigurator;
@@ -28,10 +29,11 @@ public class InitListener implements ServletContextListener {
 
     initLog4j(configDir);
 
-    XmlConfig cfg = loadXmlConfig(configDir);
+    XmlConfigSection cfg = loadXmlConfig(configDir);
+    String pushUrl = getPushUrl(cfg);
     Services services = initServices(cfg);
 
-    WebContext.init(services);
+    WebContext.init(services, pushUrl);
   }
 
   private File getConfigDir() {
@@ -52,18 +54,26 @@ public class InitListener implements ServletContextListener {
     return cfgDir;
   }
 
-  private XmlConfig loadXmlConfig(File configDir) {
+  private XmlConfigSection loadXmlConfig(File configDir) {
     final File cfgFile = new File(configDir, CONFIG_FILE_NAME);
-    XmlConfig cfg = new XmlConfig();
-
+    XmlConfigSection result;
     try {
+      XmlConfig cfg = new XmlConfig();
       cfg.load(cfgFile);
-    }
-    catch(ConfigException e) {
+      result = cfg.getSection("vk.market.plugin");
+    } catch (ConfigException e) {
       throw new RuntimeException("Unable to load config.xml", e);
     }
+    return result;
+  }
 
-    return cfg;
+  private String getPushUrl(XmlConfigSection config) {
+    try {
+      return config.getString("push.url");
+    }
+    catch(ConfigException e) {
+      throw new RuntimeException("Parameter deploy.url is not found.", e);
+    }
   }
 
   private void initLog4j(File configDir) {
@@ -72,7 +82,7 @@ public class InitListener implements ServletContextListener {
     PropertyConfigurator.configureAndWatch(log4jProps.getAbsolutePath(), TimeUnit.MINUTES.toMillis(1));
   }
 
-  private Services initServices(XmlConfig config) {
+  private Services initServices(XmlConfigSection config) {
     try {
       return new Services(config);
     }

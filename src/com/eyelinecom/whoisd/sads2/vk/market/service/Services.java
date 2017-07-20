@@ -1,6 +1,6 @@
 package com.eyelinecom.whoisd.sads2.vk.market.service;
 
-import com.eyeline.utils.config.xml.XmlConfig;
+import com.eyeline.utils.config.xml.XmlConfigSection;
 import com.eyelinecom.whoisd.sads2.vk.market.service.shorturl.ShortUrlService;
 import com.eyelinecom.whoisd.sads2.vk.market.service.shorturl.UrlResolver;
 import org.apache.log4j.Logger;
@@ -16,7 +16,7 @@ public class Services {
   private final UrlResolver urlResolver;
 
 
-  public Services(XmlConfig config) throws ServicesException {
+  public Services(XmlConfigSection config) throws ServicesException {
     urlResolver = new ShortUrlService(log);
   }
 

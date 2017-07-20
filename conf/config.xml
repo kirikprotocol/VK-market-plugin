@@ -2,6 +2,11 @@
 <config>
 
   <section name="vk.market.plugin">
+
+    <!--<param name="deploy.url" type="string">DEPLOY_URL/sads-vk-market</param>-->
+    <!--<param name="plugin.url" type="string">http://plugins.miniapps.run/vk-market</param>-->
+    <param name="push.url" type="string">https://api.miniapps.run/push</param>
+
     <section name="db">
     </section>
 

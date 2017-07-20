@@ -15,16 +15,23 @@ import javax.enterprise.inject.Produces;
 public class WebContext {
 
   private static Services services;
+  private static String pushUrl;
 
 
-  static synchronized void init(Services services) {
-    if(WebContext.services == null)
+  static synchronized void init(Services services, String pushUrl) {
+    if(WebContext.services == null) {
       WebContext.services = services;
+      WebContext.pushUrl = pushUrl;
+    }
   }
 
   @Produces
   public UrlResolver getUrlResolver() {
     return services.getUrlResolver();
+  }
+
+  public static String getPushUrl() {
+    return pushUrl;
   }
 
 }

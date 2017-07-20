@@ -33,9 +33,9 @@ public class CategoryItemsTelegramRenderer extends Renderer {
   @Override
   public void render(HttpServletResponse response, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     String itemPage = getItemPage(ctxPath, requestParams, urlResolver);
-    String menuPage = getMenuPage();
+    String menuPage = getMenuPage(ctxPath, requestParams, urlResolver);
 
-    sendResponse(response, Arrays.asList(itemPage, menuPage));
+    sendResponse(response, requestParams, Arrays.asList(itemPage, menuPage));
   }
 
   private String getItemPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
@@ -61,10 +61,20 @@ public class CategoryItemsTelegramRenderer extends Renderer {
     return sb.toString();
   }
 
-  private String getMenuPage() throws IOException {
+  private String getMenuPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
 
-    //todo: Страницу с обычными кнопками перехода к выбору категории, корзине, выходу из плагина...
+    sb.append(pageStart());
+    sb.append(divStart());
+    sb.append(bundle.getString("menu.header"));
+    sb.append(divEnd());
+    //TODO
+//    sb.append(buttonsStart());
+//    sb.append(button("change_category", bundle.getString("change.category"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
+//    sb.append(button("open_cart", bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
+//    sb.append(buttonExit(requestParams.getPluginParams(), ctxPath, urlResolver));
+//    sb.append(buttonsEnd());
+    sb.append(pageEnd());
 
     return sb.toString();
   }

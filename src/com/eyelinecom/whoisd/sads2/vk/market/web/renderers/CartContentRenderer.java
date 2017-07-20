@@ -1,27 +1,23 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.renderers;
 
-import com.eyelinecom.whoisd.sads2.vk.market.service.market.Category;
 import com.eyelinecom.whoisd.sads2.vk.market.service.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
- * author: Denis Enenko
- * date: 13.07.17
+ * author: Artem Voronov
  */
-public class CategoriesListRenderer extends Renderer {
-
+public class CartContentRenderer extends Renderer {
   private final ResourceBundle bundle;
-  private final Set<Category> categories;
 
-
-  public CategoriesListRenderer(Set<Category> categories, Locale locale) {
+  public CartContentRenderer(Locale locale) {
     super(locale);
     this.bundle = ResourceBundle.getBundle(getClass().getName(), locale);
-    this.categories = categories;
   }
 
   @Override
@@ -30,14 +26,12 @@ public class CategoriesListRenderer extends Renderer {
 
     sb.append(pageStart());
     sb.append(divStart());
-    sb.append(bundle.getString("text"));
+    sb.append("TODO: list of items with prices, total cost");//TODO
     sb.append(br());
     sb.append(divEnd());
     sb.append(buttonsStart());
 
-    for(Category cat : categories) {
-      sb.append(button(cat.getId() + "", cat.getName(), requestParams.getPluginParams(), ctxPath, "/category"));
-    }
+    sb.append(button("continue_shopping", bundle.getString("continue.shopping"), requestParams.getPluginParams(), ctxPath, "/"));
     sb.append(buttonExit(requestParams.getPluginParams(), ctxPath));
 
     sb.append(buttonsEnd());
@@ -45,5 +39,4 @@ public class CategoriesListRenderer extends Renderer {
 
     sendResponse(response, requestParams, Collections.singletonList(sb.toString()));
   }
-
 }

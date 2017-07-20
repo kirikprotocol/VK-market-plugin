@@ -19,6 +19,8 @@ public class RequestParameters {
   private final String vkAccessToken;
   private final Locale locale;
   private final String exitUrl;
+  private final String merchantEmail;
+  private final String serviceId;
 
 
   RequestParameters(HttpServletRequest request) throws HttpServletRequestException {
@@ -29,6 +31,8 @@ public class RequestParameters {
     vkAccessToken = getRequiredParameter(request, "vk_access_token");
     locale = getLocale(request);
     exitUrl = getRequiredParameter(request, "exit_url");
+    merchantEmail = getRequiredParameter(request, "merchant_email");
+    serviceId = getRequiredParameter(request, "service");
   }
 
   public String getUserId() {
@@ -59,11 +63,21 @@ public class RequestParameters {
     return protocol;
   }
 
+  public String getMerchantEmail() {
+    return merchantEmail;
+  }
+
+  public String getServiceId() {
+    return serviceId;
+  }
+
   public Map<String, String> getPluginParams() {
     Map<String, String> pluginParams = new HashMap<>();
 
     pluginParams.put("vk_user_id", vkUserId + "");
     pluginParams.put("vk_access_token", vkAccessToken);
+    pluginParams.put("merchant_email", merchantEmail);
+    pluginParams.put("service", serviceId);
     pluginParams.put("locale", locale.getLanguage());
     pluginParams.put("exit_url", exitUrl);
 

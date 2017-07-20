@@ -39,7 +39,7 @@ public class NotSupportedProtocolRenderer extends Renderer {
     sb.append(buttonsEnd());
     sb.append(pageEnd());
 
-    sendResponse(response, Collections.singletonList(sb.toString()));
+    sendResponse(response, requestParams, Collections.singletonList(sb.toString()));
   }
 
 }
