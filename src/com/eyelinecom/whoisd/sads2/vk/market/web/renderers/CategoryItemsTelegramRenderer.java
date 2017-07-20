@@ -33,9 +33,8 @@ public class CategoryItemsTelegramRenderer extends Renderer {
   @Override
   public void render(HttpServletResponse response, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     String itemPage = getItemPage(ctxPath, requestParams, urlResolver);
-    String menuPage = getMenuPage(ctxPath, requestParams, urlResolver);
 
-    sendResponse(response, requestParams, Arrays.asList(itemPage, menuPage));
+    sendResponse(response, requestParams, Arrays.asList(itemPage));
   }
 
   private String getItemPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
@@ -56,24 +55,15 @@ public class CategoryItemsTelegramRenderer extends Renderer {
     sb.append(button(navigation.currItem.getCategory().getId() + "_" + navigation.currItem.getId() + "_" + messageId, bundle.getString("add.to.cart.btn"), requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
     sb.append(button(navigation.nextItem.getCategory().getId() + "_" + navigation.nextItem.getId() + "_" + messageId, "&gt;", requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
     sb.append(buttonsEnd());
-    sb.append(pageEnd());
-
-    return sb.toString();
-  }
-
-  private String getMenuPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
-    StringBuilder sb = new StringBuilder();
-
-    sb.append(pageStart());
-    sb.append(divStart());
-    sb.append(bundle.getString("menu.header"));
-    sb.append(divEnd());
-    //TODO
-//    sb.append(buttonsStart());
-//    sb.append(button("change_category", bundle.getString("change.category"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
-//    sb.append(button("open_cart", bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
-//    sb.append(buttonExit(requestParams.getPluginParams(), ctxPath, urlResolver));
-//    sb.append(buttonsEnd());
+    sb.append(buttonsStart(getInlineButtonsAttrs()));
+    sb.append(button("change_category", bundle.getString("change.category"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
+    sb.append(buttonsEnd());
+    sb.append(buttonsStart(getInlineButtonsAttrs()));
+    sb.append(button("open_cart", bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
+    sb.append(buttonsEnd());
+    sb.append(buttonsStart(getInlineButtonsAttrs()));
+    sb.append(buttonExit(requestParams.getPluginParams(), ctxPath, urlResolver));
+    sb.append(buttonsEnd());
     sb.append(pageEnd());
 
     return sb.toString();

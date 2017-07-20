@@ -1,5 +1,6 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.renderers;
 
+import com.eyelinecom.whoisd.sads2.vk.market.WebContext;
 import com.eyelinecom.whoisd.sads2.vk.market.service.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
 import org.apache.log4j.Logger;
@@ -7,7 +8,10 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -105,11 +109,11 @@ public abstract class Renderer {
     String url;
 
     if(urlResolver != null) {
-      url = formatPageUrl(_params, ctxPath + urlPath, false);
+      url = formatPageUrl(_params, ctxPath + urlPath, true, false);
       url = ctxPath + "/su" + urlResolver.getShortUrl(url);
     }
     else {
-      url = formatPageUrl(_params, ctxPath + urlPath, true);
+      url = formatPageUrl(_params, ctxPath + urlPath, true, true);
     }
 
     return "<link pageId=\"" + url + "\">"
@@ -118,7 +122,22 @@ public abstract class Renderer {
   }
 
   protected String buttonExit(Map<String, String> params, String ctxPath) throws IOException {
-    return "<link pageId=\"" + formatPageUrl(params, ctxPath + "/exit", true) + "\">"
+    return "<link pageId=\"" + formatPageUrl(params, ctxPath + "/exit", true, true) + "\">"
+        + bundle.getString("exit.btn")
+        + "</link>";
+  }
+
+  protected String buttonExit(Map<String, String> params, String ctxPath, UrlResolver urlResolver) throws IOException {
+    String url;
+
+    if(urlResolver != null) {
+      url = formatPageUrl(params, ctxPath + "/exit", true, false);
+      url = ctxPath + "/su" + urlResolver.getShortUrl(url);
+    }
+    else {
+      url = formatPageUrl(params, ctxPath + "/exit", true, false);
+    }
+    return "<link pageId=\"" + url + "\">"
         + bundle.getString("exit.btn")
         + "</link>";
   }
@@ -137,7 +156,7 @@ public abstract class Renderer {
     return attrsVal.toString();
   }
 
-  private static String formatPageUrl(Map<String, String> params, String path, boolean encode) throws IOException {
+  private static String formatPageUrl(Map<String, String> params, String path, boolean encode, boolean escape) throws IOException {
     if(params == null || params.isEmpty())
       return path;
 
@@ -145,7 +164,7 @@ public abstract class Renderer {
 
     for(Map.Entry<String, String> e : params.entrySet()) {
       if(query.length() > 0) {
-        query.append(encode ? "&amp;" : "&");
+        query.append(escape ? "&amp;" : "&");
       }
       query.append(encode ? URLEncoder.encode(e.getKey(), "UTF-8") : e.getKey());
       query.append("=");
@@ -182,19 +201,19 @@ public abstract class Renderer {
       log.info("Send push: " + xmlPage);
 
     //TODO: добавить push если получится сохранить работоспосбность inline-кнопок, при вызове сценария xmlPush. Сейчас, видимо, сессия ломается.
-//    try {
-//      String encodedXmlPage = URLEncoder.encode(xmlPage, StandardCharsets.UTF_8.name());
-//      String pushUrl = String.format(PUSH_URL, WebContext.getPushUrl(), requestParams.getServiceId(), requestParams.getUserId(), requestParams.getProtocol(), encodedXmlPage);
-//      URL url = new URL(pushUrl);
-//      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//      int responseCode = connection.getResponseCode();
-//
-//      if(responseCode != 200)
-//        log.error("Unable push message. User ID: " + requestParams.getUserId() + ". Service: " + requestParams.getServiceId() + ". Protocol: " + requestParams.getProtocol());
-//
-//    } catch (IOException ex) {
-//      log.error("Unable push message", ex);
-//    }
+    try {
+      String encodedXmlPage = URLEncoder.encode(xmlPage, StandardCharsets.UTF_8.name());
+      String pushUrl = String.format(PUSH_URL, WebContext.getPushUrl(), requestParams.getServiceId(), requestParams.getUserId(), requestParams.getProtocol(), encodedXmlPage);
+      URL url = new URL(pushUrl);
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      int responseCode = connection.getResponseCode();
+
+      if(responseCode != 200)
+        log.error("Unable push message. User ID: " + requestParams.getUserId() + ". Service: " + requestParams.getServiceId() + ". Protocol: " + requestParams.getProtocol());
+
+    } catch (IOException ex) {
+      log.error("Unable push message", ex);
+    }
   }
 
 }

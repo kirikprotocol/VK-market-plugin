@@ -49,6 +49,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>vkItemDetailsServlet</servlet-name>
+    <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkItemDetailsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>vkItemDetailsServlet</servlet-name>
+    <url-pattern>/item-details/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>vkExitServlet</servlet-name>
     <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkExitServlet</servlet-class>
   </servlet>

@@ -98,7 +98,7 @@ public class VkMarketService {
 
   public ItemDetailed getItemById(int itemId) throws VkMarketServiceException {
     try {
-      GetByIdExtendedResponse response = vk.market().getByIdExtended(actor, itemId + "").execute();
+      GetByIdExtendedResponse response = vk.market().getByIdExtended(actor, actor.getId() + "_" + itemId).execute();
       if(response.getCount() == 0)
         return null;
 
