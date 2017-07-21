@@ -50,13 +50,13 @@ public class ItemDetailsTelegramRenderer extends Renderer {
   private String getItemDetailsPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
 
-    sb.append(pageStart((getEditablePageAttrs())));
+    sb.append(pageStart((getEditablePageAttrs(messageId, itemId))));
     sb.append(divStart());
     if (!extraPhotoUrls.isEmpty()) {
       sb.append(extraPhotoUrls.get(navigation.currExtraPhotoId));
     }
     sb.append(br());
-    sb.append(bStart()).append(name).append(bEnd());;
+    sb.append(bStart()).append(name).append(bEnd());
     sb.append(br());
     sb.append(description);
     sb.append(br());
@@ -66,9 +66,7 @@ public class ItemDetailsTelegramRenderer extends Renderer {
     if (!extraPhotoUrls.isEmpty()) {
       sb.append(buttonsStart(getInlineButtonsAttrs()));
       sb.append(button(categoryId + "_" + itemId + "_" + messageId + "_" + navigation.prevExtraPhotoId, "&lt;", requestParams.getPluginParams(), ctxPath, "/item-details", urlResolver));
-      //TODO
-//      sb.append(button("back_to_category_items", bundle.getString("back.to.category.items"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
-      sb.append(button(categoryId + "", bundle.getString("back.to.category.items"), requestParams.getPluginParams(), ctxPath, "/category"));
+      sb.append(button(categoryId + "_" + itemId + "_" + messageId, bundle.getString("back.to.category.items"), requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
       sb.append(button(categoryId + "_" + itemId + "_" + messageId, bundle.getString("add.to.cart.btn"), requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
       sb.append(button(categoryId + "_" + itemId + "_" + messageId + "_" + navigation.nextExtraPhotoId, "&gt;", requestParams.getPluginParams(), ctxPath, "/item-details", urlResolver));
       sb.append(buttonsEnd());
@@ -85,27 +83,6 @@ public class ItemDetailsTelegramRenderer extends Renderer {
     sb.append(pageEnd());
 
     return sb.toString();
-  }
-
-  //TODO: duplication
-  private Map<String, String> getEditablePageAttrs() {
-    Map<String, String> attrs = new HashMap<>();
-
-    attrs.put("telegram.message.id", messageId);
-    attrs.put("telegram.message.edit", String.valueOf(itemId != null));
-    attrs.put("telegram.keep.session", "true");
-    attrs.put("telegram.links.realignment.enabled", "false");
-
-    return attrs;
-  }
-
-  //TODO: duplication
-  private static Map<String, String> getInlineButtonsAttrs() {
-    Map<String, String> attrs = new HashMap<>();
-
-    attrs.put("telegram.inline", "true");
-
-    return attrs;
   }
 
   //TODO: duplication

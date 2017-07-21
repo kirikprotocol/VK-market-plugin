@@ -40,7 +40,7 @@ public class CategoryItemsTelegramRenderer extends Renderer {
   private String getItemPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
 
-    sb.append(pageStart(getEditablePageAttrs()));
+    sb.append(pageStart(getEditablePageAttrs(messageId, itemId)));
     sb.append(divStart());
     sb.append(navigation.currItem.getMainPhotoUrl());
     sb.append(br());
@@ -69,25 +69,7 @@ public class CategoryItemsTelegramRenderer extends Renderer {
     return sb.toString();
   }
 
-  private Map<String, String> getEditablePageAttrs() {
-    Map<String, String> attrs = new HashMap<>();
-
-    attrs.put("telegram.message.id", messageId);
-    attrs.put("telegram.message.edit", String.valueOf(itemId != null));
-    attrs.put("telegram.keep.session", "true");
-    attrs.put("telegram.links.realignment.enabled", "false");
-
-    return attrs;
-  }
-
-  private static Map<String, String> getInlineButtonsAttrs() {
-    Map<String, String> attrs = new HashMap<>();
-
-    attrs.put("telegram.inline", "true");
-
-    return attrs;
-  }
-
+  //TODO: duplication
   private class Navigation {
 
     private final Item prevItem;

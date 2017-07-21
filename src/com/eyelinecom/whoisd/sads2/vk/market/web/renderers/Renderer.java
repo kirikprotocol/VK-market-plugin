@@ -21,7 +21,6 @@ import java.util.*;
 public abstract class Renderer {
 
   private final static Logger log = Logger.getLogger("VK_MARKET_PLUGIN");
-  //TODO
   private final static String PUSH_URL = "%s?service=%s&user_id=%s&protocol=%s&scenario=xmlpush&document=%s";
   private final ResourceBundle bundle;
 
@@ -200,7 +199,6 @@ public abstract class Renderer {
     if(log.isInfoEnabled())
       log.info("Send push: " + xmlPage);
 
-    //TODO: добавить push если получится сохранить работоспосбность inline-кнопок, при вызове сценария xmlPush. Сейчас, видимо, сессия ломается.
     try {
       String encodedXmlPage = URLEncoder.encode(xmlPage, StandardCharsets.UTF_8.name());
       String pushUrl = String.format(PUSH_URL, WebContext.getPushUrl(), requestParams.getServiceId(), requestParams.getUserId(), requestParams.getProtocol(), encodedXmlPage);
@@ -214,6 +212,25 @@ public abstract class Renderer {
     } catch (IOException ex) {
       log.error("Unable push message", ex);
     }
+  }
+
+  protected static Map<String, String> getEditablePageAttrs(String messageId, Integer itemId) {
+    Map<String, String> attrs = new HashMap<>();
+
+    attrs.put("telegram.message.id", messageId);
+    attrs.put("telegram.message.edit", String.valueOf(itemId != null));
+    attrs.put("telegram.keep.session", "true");
+    attrs.put("telegram.links.realignment.enabled", "false");
+
+    return attrs;
+  }
+
+  protected static Map<String, String> getInlineButtonsAttrs() {
+    Map<String, String> attrs = new HashMap<>();
+
+    attrs.put("telegram.inline", "true");
+
+    return attrs;
   }
 
 }
