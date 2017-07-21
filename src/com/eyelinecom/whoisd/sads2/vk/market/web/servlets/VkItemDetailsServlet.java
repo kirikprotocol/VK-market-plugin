@@ -31,6 +31,7 @@ public class VkItemDetailsServlet extends VkHttpServlet {
     renderer.render(response, request.getContextPath(), params, urlResolver);
   }
 
+  //TODO: duplication VkCategoryItemsServlet
   private static UserInput parseUserInput(String val, String userId) {
     int idx0 = val.indexOf("_");
     if(idx0 == -1) {
@@ -55,6 +56,7 @@ public class VkItemDetailsServlet extends VkHttpServlet {
     return new UserInput(Integer.parseInt(categoryId), Integer.parseInt(itemId), messageId, Integer.parseInt(extraPhotoId));
   }
 
+  //TODO: duplication VkCategoryItemsServlet
   private static class UserInput {
 
     private final int categoryId;
