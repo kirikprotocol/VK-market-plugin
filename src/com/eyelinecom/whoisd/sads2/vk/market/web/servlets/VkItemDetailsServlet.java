@@ -1,9 +1,9 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.servlets;
 
-import com.eyelinecom.whoisd.sads2.vk.market.service.market.ItemDetailed;
-import com.eyelinecom.whoisd.sads2.vk.market.service.market.VkMarketService;
-import com.eyelinecom.whoisd.sads2.vk.market.service.market.VkMarketServiceException;
-import com.eyelinecom.whoisd.sads2.vk.market.service.shorturl.UrlResolver;
+import com.eyelinecom.whoisd.sads2.vk.market.services.market.ItemDetailed;
+import com.eyelinecom.whoisd.sads2.vk.market.services.market.VkMarketService;
+import com.eyelinecom.whoisd.sads2.vk.market.services.market.VkMarketServiceException;
+import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.Protocol;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.ItemDetailsTelegramRenderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;

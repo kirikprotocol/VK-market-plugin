@@ -1,4 +1,4 @@
-package com.eyelinecom.whoisd.sads2.vk.market.service;
+package com.eyelinecom.whoisd.sads2.vk.market.services;
 
 /**
  * author: Denis Enenko

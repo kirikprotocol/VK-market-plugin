@@ -1,7 +1,7 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.servlets;
 
-import com.eyelinecom.whoisd.sads2.vk.market.service.market.VkMarketService;
-import com.eyelinecom.whoisd.sads2.vk.market.service.market.VkMarketServiceException;
+import com.eyelinecom.whoisd.sads2.vk.market.services.market.VkMarketService;
+import com.eyelinecom.whoisd.sads2.vk.market.services.market.VkMarketServiceException;
 import com.eyelinecom.whoisd.sads2.vk.market.web.Protocol;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.CategoriesListRenderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;

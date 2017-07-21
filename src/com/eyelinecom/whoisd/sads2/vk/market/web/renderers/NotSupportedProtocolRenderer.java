@@ -1,6 +1,6 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.renderers;
 
-import com.eyelinecom.whoisd.sads2.vk.market.service.shorturl.UrlResolver;
+import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.Protocol;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
 

@@ -1,8 +1,8 @@
-package com.eyelinecom.whoisd.sads2.vk.market.service;
+package com.eyelinecom.whoisd.sads2.vk.market.services;
 
 import com.eyeline.utils.config.xml.XmlConfigSection;
-import com.eyelinecom.whoisd.sads2.vk.market.service.shorturl.ShortUrlService;
-import com.eyelinecom.whoisd.sads2.vk.market.service.shorturl.UrlResolver;
+import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.ShortUrlService;
+import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import org.apache.log4j.Logger;
 
 /**

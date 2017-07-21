@@ -1,8 +1,8 @@
 package com.eyelinecom.whoisd.sads2.vk.market;
 
 
-import com.eyelinecom.whoisd.sads2.vk.market.service.Services;
-import com.eyelinecom.whoisd.sads2.vk.market.service.shorturl.UrlResolver;
+import com.eyelinecom.whoisd.sads2.vk.market.services.Services;
+import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

@@ -1,6 +1,6 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.servlets;
 
-import com.eyelinecom.whoisd.sads2.vk.market.service.shorturl.UrlResolver;
+import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import org.apache.log4j.Logger;
 
 import javax.inject.Inject;

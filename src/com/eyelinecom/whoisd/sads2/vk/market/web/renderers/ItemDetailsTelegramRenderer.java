@@ -1,8 +1,8 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.renderers;
 
-import com.eyelinecom.whoisd.sads2.vk.market.service.market.ItemDetailed;
-import com.eyelinecom.whoisd.sads2.vk.market.service.market.Price;
-import com.eyelinecom.whoisd.sads2.vk.market.service.shorturl.UrlResolver;
+import com.eyelinecom.whoisd.sads2.vk.market.services.market.ItemDetailed;
+import com.eyelinecom.whoisd.sads2.vk.market.services.market.Price;
+import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
 
 import javax.servlet.http.HttpServletResponse;

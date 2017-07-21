@@ -1,4 +1,4 @@
-package com.eyelinecom.whoisd.sads2.vk.market.service.shorturl;
+package com.eyelinecom.whoisd.sads2.vk.market.services.shorturl;
 
 /**
  * author: Denis Enenko

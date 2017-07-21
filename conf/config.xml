@@ -8,6 +8,19 @@
     <param name="push.url" type="string">https://api.miniapps.run/push</param>
 
     <section name="db">
+      <param name="hibernate.connection.url" type="string">jdbc:mysql://192.168.2.200/sads_plugin_vk_market?useUnicode=true&amp;characterEncoding=UTF-8</param>
+      <param name="hibernate.connection.username" type="string">USER_NAME</param>
+      <param name="hibernate.connection.password" type="string">PASSWORD</param>
+      <param name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</param>
+      <param name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</param>
+      <param name="hibernate.hbm2ddl.auto">validate</param>
+      <param name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</param>
+      <param name="hibernate.c3p0.timeout">300</param>
+      <param name="hibernate.c3p0.max_statements">50</param>
+      <param name="hibernate.c3p0.idle_test_period">3000</param>
+      <param name="hibernate.c3p0.preferredTestQuery">SELECT 1</param>
+      <param name="hibernate.c3p0.testConnectionOnCheckout">false</param>
+      <param name="application.id" type="string">sads_plugin_vk_market</param>
     </section>
 
     <section name="mail">

@@ -3,8 +3,8 @@ package com.eyelinecom.whoisd.sads2.vk.market;
 import com.eyeline.utils.config.ConfigException;
 import com.eyeline.utils.config.xml.XmlConfig;
 import com.eyeline.utils.config.xml.XmlConfigSection;
-import com.eyelinecom.whoisd.sads2.vk.market.service.Services;
-import com.eyelinecom.whoisd.sads2.vk.market.service.ServicesException;
+import com.eyelinecom.whoisd.sads2.vk.market.services.Services;
+import com.eyelinecom.whoisd.sads2.vk.market.services.ServicesException;
 import org.apache.log4j.PropertyConfigurator;
 
 import javax.servlet.ServletContextEvent;
