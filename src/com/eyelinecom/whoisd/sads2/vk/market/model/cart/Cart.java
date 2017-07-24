@@ -44,4 +44,9 @@ public class Cart {
   public void setUser(User user) {
     this.user = user;
   }
+
+  @Transient
+  public void add(CartItem item) {
+    items.add(item);
+  }
 }
