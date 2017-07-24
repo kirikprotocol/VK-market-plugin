@@ -43,12 +43,12 @@ public class AskQuantityTelegramRenderer extends Renderer {
 
   @Override
   public void render(HttpServletResponse response, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
-    String itemDetailsPage = getItemDetailsPage(ctxPath, requestParams, urlResolver);
+    String askQuantityPage = getAskQuantityPage(ctxPath, requestParams, urlResolver);
 
-    sendResponse(response, requestParams, Arrays.asList(itemDetailsPage));
+    sendResponse(response, requestParams, Arrays.asList(askQuantityPage));
   }
 
-  private String getItemDetailsPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
+  private String getAskQuantityPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
 
     sb.append(pageStart((getEditablePageAttrs(messageId, itemId))));

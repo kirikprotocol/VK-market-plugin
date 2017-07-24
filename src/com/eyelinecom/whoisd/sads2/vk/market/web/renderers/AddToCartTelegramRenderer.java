@@ -1,7 +1,6 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.renderers;
 
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.ItemDetailed;
-import com.eyelinecom.whoisd.sads2.vk.market.services.market.Price;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
 
@@ -17,13 +16,10 @@ import java.util.ResourceBundle;
  */
 public class AddToCartTelegramRenderer extends Renderer {
 
-  //TODO: clean unused
   private final ResourceBundle bundle;
   private final List<String> extraPhotoUrls;
   private final Integer extraPhotoId;
   private final String name;
-  private final Price price;
-  private final String description;
   private final String messageId;
   private final int categoryId;
   private final Integer itemId;
@@ -38,29 +34,42 @@ public class AddToCartTelegramRenderer extends Renderer {
     this.categoryId = categoryId;
     this.itemId = itemId;
     this.extraPhotoUrls = itemDetailed.getExtraPhotoUrls();
-    this.description = itemDetailed.getDescription();
     this.name = itemDetailed.getName();
-    this.price = itemDetailed.getPrice();
     this.quantity = quantity;
   }
 
   @Override
   public void render(HttpServletResponse response, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
-    String itemDetailsPage = getItemDetailsPage(ctxPath, requestParams, urlResolver);
+    String itemAddedPage = getItemAddedPage(ctxPath, requestParams, urlResolver);
 
-    sendResponse(response, requestParams, Arrays.asList(itemDetailsPage));
+    sendResponse(response, requestParams, Arrays.asList(itemAddedPage));
   }
 
-  private String getItemDetailsPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
+  private String getItemAddedPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
-    //TODO
-
     sb.append(pageStart((getEditablePageAttrs(messageId, itemId))));
     sb.append(divStart());
-    sb.append("item id: " + itemId);
-    sb.append(br());
-    sb.append("quantity: " + quantity);
+    if (!extraPhotoUrls.isEmpty()) {
+      sb.append(extraPhotoUrls.get(extraPhotoId));
+      sb.append(br());
+    }
+    sb.append(bStart()).append(String.format(bundle.getString("added.quantity"), name, quantity)).append(bEnd());
     sb.append(divEnd());
+    sb.append(buttonsStart(getInlineButtonsAttrs()));
+    sb.append(button(categoryId + "_" + itemId + "_" + messageId + "_" + extraPhotoId, bundle.getString("add.more"), requestParams.getPluginParams(), ctxPath, "/ask-quantity", urlResolver));
+    sb.append(buttonsEnd());
+    sb.append(buttonsStart(getInlineButtonsAttrs()));
+    sb.append(button("", bundle.getString("continue.shopping"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
+    sb.append(buttonsEnd());
+    sb.append(buttonsStart(getInlineButtonsAttrs()));
+    sb.append(button("open_cart", bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));//TODO
+    sb.append(buttonsEnd());
+    sb.append(buttonsStart(getInlineButtonsAttrs()));
+    sb.append(button("proceed_to_checkout", bundle.getString("proceed.to.checkout"), requestParams.getPluginParams(), ctxPath, "/order", urlResolver));//TODO
+    sb.append(buttonsEnd());
+    sb.append(buttonsStart(getInlineButtonsAttrs()));
+    sb.append(buttonExit(requestParams.getPluginParams(), ctxPath, urlResolver));
+    sb.append(buttonsEnd());
     sb.append(pageEnd());
 
     return sb.toString();

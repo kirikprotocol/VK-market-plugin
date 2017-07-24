@@ -54,8 +54,8 @@ public class ItemDetailsTelegramRenderer extends Renderer {
     sb.append(divStart());
     if (!extraPhotoUrls.isEmpty()) {
       sb.append(extraPhotoUrls.get(navigation.currExtraPhotoId));
+      sb.append(br());
     }
-    sb.append(br());
     sb.append(bStart()).append(name).append(bEnd());
     sb.append(br());
     sb.append(description);

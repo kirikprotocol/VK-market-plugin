@@ -26,6 +26,8 @@ public class VkAddToCartServlet extends VkHttpServlet {
   protected void handleRequest(HttpServletRequest request, HttpServletResponse response, Protocol protocol, RequestParameters params) throws VkMarketServiceException, IOException {
     UserInput value = UserInputParser.parse(params.getUserInput(), params.getUserId());
 
+    //TODO: save cart in DB
+
     VkMarketService vk = new VkMarketService(params.getVkUserId(), params.getVkAccessToken());
     ItemDetailed itemDetailed = vk.getItemById(value.getItemId());
 
