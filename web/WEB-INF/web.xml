@@ -58,6 +58,24 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>vkAddToCartServlet</servlet-name>
+    <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkAddToCartServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>vkAddToCartServlet</servlet-name>
+    <url-pattern>/add-to-cart/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>vkAskQuantityServlet</servlet-name>
+    <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkAskQuantityServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>vkAskQuantityServlet</servlet-name>
+    <url-pattern>/ask-quantity/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>vkExitServlet</servlet-name>
     <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkExitServlet</servlet-class>
   </servlet>

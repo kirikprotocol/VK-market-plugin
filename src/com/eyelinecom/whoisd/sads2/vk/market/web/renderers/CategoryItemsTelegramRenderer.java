@@ -52,7 +52,7 @@ public class CategoryItemsTelegramRenderer extends Renderer {
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     sb.append(button(navigation.prevItem.getCategory().getId() + "_" + navigation.prevItem.getId() + "_" + messageId, "&lt;", requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
     sb.append(button(navigation.currItem.getCategory().getId() + "_" + navigation.currItem.getId() + "_" + messageId, bundle.getString("item.details.btn"), requestParams.getPluginParams(), ctxPath, "/item-details", urlResolver));
-    sb.append(button(navigation.currItem.getCategory().getId() + "_" + navigation.currItem.getId() + "_" + messageId, bundle.getString("add.to.cart.btn"), requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
+    sb.append(button(navigation.currItem.getCategory().getId() + "_" + navigation.currItem.getId() + "_" + messageId + "_0", bundle.getString("add.to.cart.btn"), requestParams.getPluginParams(), ctxPath, "/ask-quantity", urlResolver));
     sb.append(button(navigation.nextItem.getCategory().getId() + "_" + navigation.nextItem.getId() + "_" + messageId, "&gt;", requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
