@@ -8,10 +8,12 @@ import com.vk.api.sdk.objects.market.MarketCategory;
 import com.vk.api.sdk.objects.market.MarketItem;
 import com.vk.api.sdk.objects.market.MarketItemFull;
 import com.vk.api.sdk.objects.market.responses.GetByIdExtendedResponse;
+import com.vk.api.sdk.objects.market.responses.GetByIdResponse;
 import com.vk.api.sdk.objects.market.responses.GetResponse;
 import com.vk.api.sdk.objects.photos.Photo;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * author: Denis Enenko
@@ -119,6 +121,21 @@ public class VkMarketService {
     }
   }
 
+  public List<Item> getItemsById(List<Integer> itemIds) throws VkMarketServiceException {
+    try {
+      List<String> itemIdsParam = itemIds.stream().map(it-> actor.getId() + "_" + it).collect(Collectors.toList());
+      GetByIdResponse response = vk.market().getById(actor, itemIdsParam).execute();
+      if(response.getCount() == 0)
+        return null;
+
+      List<MarketItem> marketItems = response.getItems();
+      return marketItems.stream().map(VkMarketService::convert).collect(Collectors.toList());
+    }
+    catch(Exception e) {
+      throw new VkMarketServiceException(e.getMessage(), e);
+    }
+  }
+
   private static List<String> getExtraPhotos(MarketItemFull item) {
     List<String> photos = new ArrayList<>();
 
@@ -138,6 +155,16 @@ public class VkMarketService {
     }
 
     return photos;
+  }
+
+  private static Item convert(MarketItem marketItem) {
+    return new Item(
+      marketItem.getId(),
+      new Category(marketItem.getCategory().getId(), marketItem.getCategory().getName()),
+      marketItem.getTitle(),
+      new Price(marketItem.getPrice().getAmount(), marketItem.getPrice().getCurrency().getName(), marketItem.getPrice().getText()),
+      marketItem.getThumbPhoto()
+    );
   }
 
 }

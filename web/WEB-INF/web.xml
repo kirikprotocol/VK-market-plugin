@@ -41,7 +41,7 @@
 
   <servlet>
     <servlet-name>vkCartServlet</servlet-name>
-    <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkCartServlet</servlet-class>
+    <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkCartContentServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>vkCartServlet</servlet-name>

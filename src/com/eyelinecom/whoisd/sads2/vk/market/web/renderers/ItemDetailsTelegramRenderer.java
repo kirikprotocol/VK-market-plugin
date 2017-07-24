@@ -75,7 +75,7 @@ public class ItemDetailsTelegramRenderer extends Renderer {
     sb.append(button("change_category", bundle.getString("change.category"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button("open_cart", bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
+    sb.append(button(categoryId + "_" + itemId + "_" + messageId, bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     sb.append(buttonExit(requestParams.getPluginParams(), ctxPath, urlResolver));
