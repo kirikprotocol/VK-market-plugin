@@ -15,9 +15,9 @@
     <property name="hibernate.generate_statistics">true</property>
 
 
-    <class-cache class="com.eyelinecom.whoisd.sads2.vk.market.model.model.user.User" usage="read-write" region="users"/>
-    <class-cache class="com.eyelinecom.whoisd.sads2.vk.market.model.model.cart.Cart" usage="read-write" region="carts"/>
-    <class-cache class="com.eyelinecom.whoisd.sads2.vk.market.model.model.item.CartItem" usage="read-write" region="cart_items"/>
+    <class-cache class="com.eyelinecom.whoisd.sads2.vk.market.model.user.User" usage="read-write" region="users"/>
+    <class-cache class="com.eyelinecom.whoisd.sads2.vk.market.model.cart.Cart" usage="read-write" region="carts"/>
+    <class-cache class="com.eyelinecom.whoisd.sads2.vk.market.model.item.CartItem" usage="read-write" region="cart_items"/>
   </session-factory>
 
  </hibernate-configuration>
