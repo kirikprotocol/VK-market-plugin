@@ -45,8 +45,4 @@ public class Cart {
     this.user = user;
   }
 
-  @Transient
-  public void add(CartItem item) {
-    items.add(item);
-  }
 }

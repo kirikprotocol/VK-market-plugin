@@ -2,7 +2,6 @@ package com.eyelinecom.whoisd.sads2.vk.market.model.user;
 
 
 import com.eyelinecom.whoisd.sads2.vk.market.model.cart.Cart;
-import com.eyelinecom.whoisd.sads2.vk.market.model.item.CartItem;
 import com.eyelinecom.whoisd.sads2.vk.market.model.order.Order;
 
 import javax.persistence.*;
@@ -59,8 +58,4 @@ public class User {
     this.orders = orders;
   }
 
-  @Transient
-  public void addToCart(CartItem item) {
-    cart.add(item);
-  }
 }

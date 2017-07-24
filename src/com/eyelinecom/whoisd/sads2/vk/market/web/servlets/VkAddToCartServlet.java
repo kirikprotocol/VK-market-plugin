@@ -19,6 +19,9 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * author: Artem Voronov
@@ -45,7 +48,7 @@ public class VkAddToCartServlet extends VkHttpServlet {
     renderer.render(response, request.getContextPath(), params, urlResolver);
   }
 
-  private void addToCart(String userId, Integer itemId, Integer quantity) {
+  private void addToCart(String userId, Integer vkItemId, Integer quantity) {
     db.vtx(s -> {
       User user = (User) UserQuery.byUserId(userId, s).uniqueResult();
 
@@ -59,12 +62,23 @@ public class VkAddToCartServlet extends VkHttpServlet {
         cart.setUser(user);
       }
 
-      CartItem item = new CartItem();
-      item.setVkItemId(itemId);
-      item.setQuantity(quantity);
-      item.setCart(user.getCart());
-      s.save(item);
-      user.addToCart(item);
+      Cart userCart = user.getCart();
+      List<CartItem> items = userCart.getItems();
+
+      Set<Integer> vkItemIds = items.stream().map(CartItem::getVkItemId).collect(Collectors.toSet());
+      if (!vkItemIds.contains(vkItemId)) {
+        CartItem item = new CartItem();
+        item.setVkItemId(vkItemId);
+        item.setQuantity(quantity);
+        item.setCart(user.getCart());
+        s.save(item);
+        items.add(item);
+      } else {
+        CartItem exists = items.stream().filter(it-> vkItemId.equals(it.getVkItemId()))
+          .findFirst().orElseThrow(() -> new IllegalStateException("Illegal state of cart: missed vkItemId '"+vkItemId+"', for cart of user '"+userId+"'"));
+
+        exists.setQuantity(exists.getQuantity() + quantity);
+      }
     });
   }
 }
