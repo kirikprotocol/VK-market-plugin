@@ -5,7 +5,7 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.market.VkMarketService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.VkMarketServiceException;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.Protocol;
-import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.CategoryItemsTelegramRenderer;
+import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram.CategoryItemsTelegramRenderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInput;
 import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputParser;

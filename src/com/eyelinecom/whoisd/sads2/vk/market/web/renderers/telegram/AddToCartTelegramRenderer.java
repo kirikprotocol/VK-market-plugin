@@ -1,7 +1,8 @@
-package com.eyelinecom.whoisd.sads2.vk.market.web.renderers;
+package com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram;
 
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.ItemDetailed;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
+import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
 
 import javax.servlet.http.HttpServletResponse;

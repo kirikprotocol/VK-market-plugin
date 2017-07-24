@@ -2,6 +2,7 @@ package com.eyelinecom.whoisd.sads2.vk.market;
 
 
 import com.eyelinecom.whoisd.sads2.vk.market.services.Services;
+import com.eyelinecom.whoisd.sads2.vk.market.services.cart.CartService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.db.DBService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 
@@ -34,6 +35,11 @@ public class WebContext {
   @Produces
   public DBService getDbService() {
     return services.getDbService();
+  }
+
+  @Produces
+  public CartService getCartService() {
+    return services.getCartService();
   }
 
   public static String getPushUrl() {

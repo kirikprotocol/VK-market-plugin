@@ -76,6 +76,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>vkChooseItemInCartServlet</servlet-name>
+    <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkChooseItemInCartServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>vkChooseItemInCartServlet</servlet-name>
+    <url-pattern>/choose-item-in-cart/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>vkExitServlet</servlet-name>
     <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkExitServlet</servlet-class>
   </servlet>

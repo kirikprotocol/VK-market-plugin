@@ -1,6 +1,7 @@
 package com.eyelinecom.whoisd.sads2.vk.market.services;
 
 import com.eyeline.utils.config.xml.XmlConfigSection;
+import com.eyelinecom.whoisd.sads2.vk.market.services.cart.CartService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.db.DBService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.ShortUrlService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
@@ -18,10 +19,12 @@ public class Services {
 
   private final UrlResolver urlResolver;
   private final DBService dbService;
+  private final CartService cartService;
 
   public Services(XmlConfigSection config) throws ServicesException {
     this.urlResolver = new ShortUrlService(log);
     this.dbService = initDBService(config);
+    this.cartService = new CartService(dbService);
   }
 
   private DBService initDBService(XmlConfigSection config) throws ServicesException {
@@ -41,5 +44,9 @@ public class Services {
 
   public DBService getDbService() {
     return dbService;
+  }
+
+  public CartService getCartService() {
+    return cartService;
   }
 }

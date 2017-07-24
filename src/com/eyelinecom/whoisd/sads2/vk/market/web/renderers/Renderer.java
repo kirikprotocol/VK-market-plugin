@@ -25,7 +25,7 @@ public abstract class Renderer {
   private final ResourceBundle bundle;
 
 
-  Renderer(Locale locale) {
+  protected Renderer(Locale locale) {
     this.bundle = ResourceBundle.getBundle(Renderer.class.getName(), locale);
   }
 
@@ -218,7 +218,7 @@ public abstract class Renderer {
     Map<String, String> attrs = new HashMap<>();
 
     attrs.put("telegram.message.id", messageId);
-    attrs.put("telegram.message.edit", String.valueOf(itemId != null));
+    attrs.put("telegram.message.edit", String.valueOf(itemId != null));//TODO: always "true"
     attrs.put("telegram.keep.session", "true");
     attrs.put("telegram.links.realignment.enabled", "false");
 

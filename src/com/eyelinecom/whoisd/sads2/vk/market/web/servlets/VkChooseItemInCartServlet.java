@@ -8,8 +8,8 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.market.VkMarketService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.VkMarketServiceException;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.Protocol;
-import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram.CartContentRenderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
+import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram.ChooseItemInCartTelegramRenderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInput;
 import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputParser;
 
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * author: Artem Voronov
  */
-public class VkCartContentServlet extends VkHttpServlet {
+public class VkChooseItemInCartServlet extends VkHttpServlet {
 
   @Inject
   private UrlResolver urlResolver;
@@ -41,7 +41,8 @@ public class VkCartContentServlet extends VkHttpServlet {
     List<Item> itemDescriptions = vk.getItemsById(userCart.getItems().stream().map(it->it.getVkItemId()).collect(Collectors.toList()));
     Map<Integer, Integer> itemQuantities = userCart.getItems().stream().collect(Collectors.toMap(CartItem::getVkItemId, CartItem::getQuantity));
 
-    Renderer renderer = new CartContentRenderer(params.getLocale(), itemDescriptions, itemQuantities, userInput.getMessageId(), userInput.getCategoryId(), userInput.getItemId());
+    Renderer renderer = new ChooseItemInCartTelegramRenderer(params.getLocale(), itemDescriptions, itemQuantities, userInput.getMessageId(), userInput.getCategoryId(), userInput.getItemId());
     renderer.render(response, request.getContextPath(), params, urlResolver);
+
   }
 }

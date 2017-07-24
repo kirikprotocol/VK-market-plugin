@@ -1,8 +1,9 @@
-package com.eyelinecom.whoisd.sads2.vk.market.web.renderers;
+package com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram;
 
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.Item;
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.Price;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
+import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
 
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +40,6 @@ public class CartContentRenderer extends Renderer {
     sb.append(pageStart(getEditablePageAttrs(messageId, itemId)));
     sb.append(divStart());
 
-
     if (itemDescriptions.isEmpty()) {
       sb.append(bStart()).append(bundle.getString("cart.is.empty")).append(bEnd());
       sb.append(br());
@@ -64,7 +64,7 @@ public class CartContentRenderer extends Renderer {
     sb.append(buttonsEnd());
     if (!itemDescriptions.isEmpty()) {
       sb.append(buttonsStart(getInlineButtonsAttrs()));
-      sb.append(button("delete_from_cart", bundle.getString("delete.from.cart"), requestParams.getPluginParams(), ctxPath, "/delete-from-cart", urlResolver));
+      sb.append(button(categoryId + "_" + itemId + "_" + messageId, bundle.getString("delete.from.cart"), requestParams.getPluginParams(), ctxPath, "/choose-item-in-cart", urlResolver));
       sb.append(buttonsEnd());
       sb.append(buttonsStart(getInlineButtonsAttrs()));
       sb.append(button("proceed_to_checkout", bundle.getString("proceed.to.checkout"), requestParams.getPluginParams(), ctxPath, "/order", urlResolver));//TODO
