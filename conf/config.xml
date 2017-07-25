@@ -24,6 +24,12 @@
     </section>
 
     <section name="mail">
+      <param name="mail.host" type="string">MAIL_HOST</param>
+      <param name="mail.user" type="string"></param>
+      <param name="mail.password" type="string"></param>
+      <param name="mail.transport.protocol" type="string">smtp</param>
+      <param name="mail.from" type="string">service@eyeline.mobi</param>
+      <param name="mail.from.name" type="string">MINIAPPS [local]</param>
     </section>
   </section>
 

@@ -4,6 +4,7 @@ package com.eyelinecom.whoisd.sads2.vk.market;
 import com.eyelinecom.whoisd.sads2.vk.market.services.Services;
 import com.eyelinecom.whoisd.sads2.vk.market.services.cart.CartService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.db.DBService;
+import com.eyelinecom.whoisd.sads2.vk.market.services.notification.NotificationProvider;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -40,6 +41,11 @@ public class WebContext {
   @Produces
   public CartService getCartService() {
     return services.getCartService();
+  }
+
+  @Produces
+  public NotificationProvider getNotificationProvider() {
+    return services.getNotificationProvider();
   }
 
   public static String getPushUrl() {
