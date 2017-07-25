@@ -9,7 +9,7 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.market.VkMarketServiceExce
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.Protocol;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
-import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram.ChooseItemInCartTelegramRenderer;
+import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram.ChooseItemInCartForDeletingTelegramRenderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInput;
 import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputParser;
 
@@ -41,7 +41,7 @@ public class VkChooseItemInCartServlet extends VkHttpServlet {
     List<Item> itemDescriptions = vk.getItemsById(userCart.getItems().stream().map(it->it.getVkItemId()).collect(Collectors.toList()));
     Map<Integer, Integer> itemQuantities = userCart.getItems().stream().collect(Collectors.toMap(CartItem::getVkItemId, CartItem::getQuantity));
 
-    Renderer renderer = new ChooseItemInCartTelegramRenderer(params.getLocale(), itemDescriptions, itemQuantities, userInput.getMessageId(), userInput.getCategoryId(), userInput.getItemId());
+    Renderer renderer = new ChooseItemInCartForDeletingTelegramRenderer(params.getLocale(), itemDescriptions, itemQuantities, userInput.getMessageId(), userInput.getCategoryId(), userInput.getItemId());
     renderer.render(response, request.getContextPath(), params, urlResolver);
 
   }

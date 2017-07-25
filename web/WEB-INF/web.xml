@@ -85,6 +85,15 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>vkDeleteFromCartServlet</servlet-name>
+    <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkDeleteFromCartServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>vkDeleteFromCartServlet</servlet-name>
+    <url-pattern>/delete-from-cart/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>vkExitServlet</servlet-name>
     <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkExitServlet</servlet-class>
   </servlet>

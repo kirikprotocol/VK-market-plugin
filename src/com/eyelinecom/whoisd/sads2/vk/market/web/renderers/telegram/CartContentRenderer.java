@@ -35,6 +35,12 @@ public class CartContentRenderer extends Renderer {
 
   @Override
   public void render(HttpServletResponse response, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
+    String cartContentPage = getCartContentPage(ctxPath, requestParams, urlResolver);
+
+    sendResponse(response, requestParams, Arrays.asList(cartContentPage));
+  }
+
+  private String getCartContentPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
 
     sb.append(pageStart(getEditablePageAttrs(messageId, itemId)));
@@ -56,9 +62,9 @@ public class CartContentRenderer extends Renderer {
       //TODO: нужно рассчитывать для общего случая
       sb.append(br());
       sb.append(bStart()).append(bundle.getString("total.cost")).append(": ").append(convert(totalCost)).append(" ").append("RUB").append(bEnd());
-      sb.append(divEnd());
-    }
 
+    }
+    sb.append(divEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     sb.append(button(categoryId + "_" + itemId + "_" + messageId, bundle.getString("back"), requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
     sb.append(buttonsEnd());
@@ -67,15 +73,14 @@ public class CartContentRenderer extends Renderer {
       sb.append(button(categoryId + "_" + itemId + "_" + messageId, bundle.getString("delete.from.cart"), requestParams.getPluginParams(), ctxPath, "/choose-item-in-cart", urlResolver));
       sb.append(buttonsEnd());
       sb.append(buttonsStart(getInlineButtonsAttrs()));
-      sb.append(button("proceed_to_checkout", bundle.getString("proceed.to.checkout"), requestParams.getPluginParams(), ctxPath, "/order", urlResolver));//TODO
+      sb.append(button("", bundle.getString("proceed.to.checkout"), requestParams.getPluginParams(), ctxPath, "/order", urlResolver));//TODO
       sb.append(buttonsEnd());
     }
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     sb.append(buttonExit(requestParams.getPluginParams(), ctxPath, urlResolver));
     sb.append(buttonsEnd());
     sb.append(pageEnd());
-
-    sendResponse(response, requestParams, Collections.singletonList(sb.toString()));
+    return sb.toString();
   }
 
   private static String convert(Integer totalCost) {

@@ -38,6 +38,7 @@ public class CategoriesListRenderer extends Renderer {
     for(Category cat : categories) {
       sb.append(button(cat.getId() + "", cat.getName(), requestParams.getPluginParams(), ctxPath, "/category"));
     }
+    //TODO: open cart button
     sb.append(buttonExit(requestParams.getPluginParams(), ctxPath));
 
     sb.append(buttonsEnd());

@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * author: Artem Voronov
  */
-public class ChooseItemInCartTelegramRenderer extends Renderer {
+public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
 
   private final ResourceBundle bundle;
   private final List<Item> itemDescriptions;
@@ -21,7 +21,7 @@ public class ChooseItemInCartTelegramRenderer extends Renderer {
   private final Integer itemId;
   private final int categoryId;
 
-  public ChooseItemInCartTelegramRenderer(Locale locale, List<Item> itemDescriptions, Map<Integer, Integer> itemQuantities, String messageId, int categoryId, Integer itemId) {
+  public ChooseItemInCartForDeletingTelegramRenderer(Locale locale, List<Item> itemDescriptions, Map<Integer, Integer> itemQuantities, String messageId, int categoryId, Integer itemId) {
     super(locale);
     this.bundle = ResourceBundle.getBundle(getClass().getName(), locale);
     this.itemDescriptions = itemDescriptions;

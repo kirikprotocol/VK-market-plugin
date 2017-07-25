@@ -45,4 +45,8 @@ public class Cart {
     this.user = user;
   }
 
+  @Transient
+  public boolean isEmpty() {
+    return items.isEmpty();
+  }
 }

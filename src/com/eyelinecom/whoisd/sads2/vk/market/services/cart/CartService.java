@@ -7,6 +7,7 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.db.DBService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.db.query.UserQuery;
 import org.hibernate.Session;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -65,6 +66,24 @@ public class CartService {
 
         exists.setQuantity(exists.getQuantity() + quantity);
       }
+    });
+  }
+
+  public Cart removeFromCart(String userId, Integer vkItemId) {
+    return db.tx(s -> {
+      User user = getOrCreateUser(userId, s);
+
+      Cart userCart = user.getCart();
+      List<CartItem> items = userCart.getItems();
+
+      for (Iterator<CartItem> iterator = items.iterator(); iterator.hasNext();) {
+        CartItem currentItem = iterator.next();
+        if (vkItemId.equals(currentItem.getVkItemId())) {
+          s.delete(currentItem);
+          iterator.remove();
+        }
+      }
+      return userCart;
     });
   }
 }
