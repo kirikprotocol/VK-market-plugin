@@ -214,11 +214,11 @@ public abstract class Renderer {
     }
   }
 
-  protected static Map<String, String> getEditablePageAttrs(String messageId, Integer itemId) {
+  protected static Map<String, String> getEditablePageAttrs(String messageId, boolean edit) {
     Map<String, String> attrs = new HashMap<>();
 
     attrs.put("telegram.message.id", messageId);
-    attrs.put("telegram.message.edit", String.valueOf(itemId != null));//TODO: always "true"
+    attrs.put("telegram.message.edit", String.valueOf(edit));
     attrs.put("telegram.keep.session", "true");
     attrs.put("telegram.links.realignment.enabled", "false");
 

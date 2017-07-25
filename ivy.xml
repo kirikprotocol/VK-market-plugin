@@ -88,6 +88,15 @@
     <dependency org="org.codehaus.groovy" name="groovy-all" rev="2.4.10" conf="prod->default">
       <artifact name="groovy-all" type="jar" ext="jar" m:classifier="indy" conf="prod->default"/>
     </dependency>
+
+    <!-- Jackson serialization\deserialization for Jersey-->
+    <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="2.6.5" conf="prod->default"/>
+    <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.6.5" conf="prod->default"/>
+    <dependency org="com.fasterxml.jackson.core" name="jackson-annotations" rev="2.6.5" conf="prod->default"/>
+    <dependency org="com.fasterxml.jackson.jaxrs" name="jackson-jaxrs-json-provider" rev="2.6.5" conf="prod->default"/>
+    <dependency org="com.fasterxml.jackson.jaxrs" name="jackson-jaxrs-base" rev="2.6.5" conf="prod->default"/>
+    <dependency org="com.fasterxml.jackson.module" name="jackson-module-jaxb-annotations" rev="2.6.5" conf="prod->default"/>
+
   </dependencies>
 
 </ivy-module>

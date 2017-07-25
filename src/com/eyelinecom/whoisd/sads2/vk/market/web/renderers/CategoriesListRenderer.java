@@ -3,10 +3,14 @@ package com.eyelinecom.whoisd.sads2.vk.market.web.renderers;
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.Category;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
+import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputJsonBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 /**
  * author: Denis Enenko
@@ -36,9 +40,9 @@ public class CategoriesListRenderer extends Renderer {
     sb.append(buttonsStart());
 
     for(Category cat : categories) {
-      sb.append(button(cat.getId() + "", cat.getName(), requestParams.getPluginParams(), ctxPath, "/category"));
+      sb.append(button(UserInputJsonBuilder.json(cat.getId()), cat.getName(), requestParams.getPluginParams(), ctxPath, "/category"));
     }
-    //TODO: open cart button
+    sb.append(button(UserInputJsonBuilder.json(), bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
     sb.append(buttonExit(requestParams.getPluginParams(), ctxPath));
 
     sb.append(buttonsEnd());

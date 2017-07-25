@@ -35,23 +35,15 @@ public class VkCartContentServlet extends VkHttpServlet {
 
   protected void handleRequest(HttpServletRequest request, HttpServletResponse response, Protocol protocol, RequestParameters params) throws VkMarketServiceException, IOException {
     String userId = params.getUserId();
-    UserInput userInput = UserInputParser.parse(params.getUserInput(), userId);
+    UserInput userInput = UserInputParser.decodeAndParse(params.getUserInput(), userId);
     Cart userCart = cartService.getCartItems(userId);
 
-    List<Item> itemDescriptions = getItemDescriptions(userCart, params);
+    VkMarketService vk = new VkMarketService(params.getVkUserId(), params.getVkAccessToken());
+    List<Item> itemDescriptions = vk.getItemsById(userCart);
     Map<Integer, Integer> itemQuantities = getItemQuantities(userCart);
 
-    Renderer renderer = new CartContentRenderer(params.getLocale(), itemDescriptions, itemQuantities, userInput.getMessageId(), userInput.getCategoryId(), userInput.getItemId());
+    Renderer renderer = new CartContentRenderer(params.getLocale(), itemDescriptions, itemQuantities, userInput.getMessageId(), userInput.getCategoryId(), userInput.getItemId(), userInput.getFromInlineButton());
     renderer.render(response, request.getContextPath(), params, urlResolver);
-  }
-
-  @SuppressWarnings("unchecked")
-  private static List<Item> getItemDescriptions(Cart userCart, RequestParameters params) throws VkMarketServiceException {
-    if (userCart.isEmpty())
-      return Collections.emptyList();
-
-    VkMarketService vk = new VkMarketService(params.getVkUserId(), params.getVkAccessToken());
-    return vk.getItemsById(userCart.getItems().stream().map(it->it.getVkItemId()).collect(Collectors.toList()));
   }
 
   @SuppressWarnings("unchecked")

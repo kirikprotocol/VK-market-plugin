@@ -4,6 +4,7 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.market.Item;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
+import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputJsonBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -16,16 +17,14 @@ public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
 
   private final ResourceBundle bundle;
   private final List<Item> itemDescriptions;
-  private final Map<Integer, Integer> itemQuantities;
   private final String messageId;
   private final Integer itemId;
-  private final int categoryId;
+  private final Integer categoryId;
 
-  public ChooseItemInCartForDeletingTelegramRenderer(Locale locale, List<Item> itemDescriptions, Map<Integer, Integer> itemQuantities, String messageId, int categoryId, Integer itemId) {
+  public ChooseItemInCartForDeletingTelegramRenderer(Locale locale, List<Item> itemDescriptions, String messageId, Integer categoryId, Integer itemId) {
     super(locale);
     this.bundle = ResourceBundle.getBundle(getClass().getName(), locale);
     this.itemDescriptions = itemDescriptions;
-    this.itemQuantities = itemQuantities;
     this.messageId = messageId;
     this.categoryId = categoryId;
     this.itemId = itemId;
@@ -41,17 +40,17 @@ public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
   private String getChooseItemPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
 
-    sb.append(pageStart(getEditablePageAttrs(messageId, itemId)));
+    sb.append(pageStart(getEditablePageAttrs(messageId, true)));
     sb.append(divStart());
     sb.append(bundle.getString("choose.item"));
     sb.append(divEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     for (Item item : itemDescriptions) {
-      sb.append(button(item.getCategory().getId() + "_" + item.getId() + "_" + messageId, item.getName(), requestParams.getPluginParams(), ctxPath, "/delete-from-cart", urlResolver));
+      sb.append(button(UserInputJsonBuilder.json(item.getCategory().getId(), item.getId(), messageId), item.getName(), requestParams.getPluginParams(), ctxPath, "/delete-from-cart", urlResolver));
     }
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(categoryId + "_" + itemId + "_" + messageId, bundle.getString("back.to.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
+    sb.append(button(UserInputJsonBuilder.json(categoryId, itemId, messageId, true), bundle.getString("back.to.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
     sb.append(buttonsEnd());
     sb.append(pageEnd());
 

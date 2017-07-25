@@ -29,7 +29,7 @@ public class VkAddToCartServlet extends VkHttpServlet {
 
   protected void handleRequest(HttpServletRequest request, HttpServletResponse response, Protocol protocol, RequestParameters params) throws VkMarketServiceException, IOException {
     String userId = params.getUserId();
-    UserInput value = UserInputParser.parse(params.getUserInput(), userId);
+    UserInput value = UserInputParser.decodeAndParse(params.getUserInput(), userId);
 
     cartService.addToCart(userId, value.getItemId(), value.getQuantity());
 

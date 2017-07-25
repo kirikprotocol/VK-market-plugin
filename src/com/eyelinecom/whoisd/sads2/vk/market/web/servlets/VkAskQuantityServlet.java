@@ -24,7 +24,7 @@ public class VkAskQuantityServlet extends VkHttpServlet {
   private UrlResolver urlResolver;
 
   protected void handleRequest(HttpServletRequest request, HttpServletResponse response, Protocol protocol, RequestParameters params) throws VkMarketServiceException, IOException {
-    UserInput value = UserInputParser.parse(params.getUserInput(), params.getUserId());
+    UserInput value = UserInputParser.decodeAndParse(params.getUserInput(), params.getUserId());
 
     VkMarketService vk = new VkMarketService(params.getVkUserId(), params.getVkAccessToken());
     ItemDetailed itemDetailed = vk.getItemById(value.getItemId());

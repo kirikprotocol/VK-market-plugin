@@ -30,7 +30,7 @@ public class VkDeleteFromCartServlet extends VkHttpServlet {
 
   protected void handleRequest(HttpServletRequest request, HttpServletResponse response, Protocol protocol, RequestParameters params) throws IOException, VkMarketServiceException {
     String userId = params.getUserId();
-    UserInput value = UserInputParser.parse(params.getUserInput(), userId);
+    UserInput value = UserInputParser.decodeAndParse(params.getUserInput(), userId);
 
     Cart userCart = cartService.removeFromCart(userId, value.getItemId());
 
