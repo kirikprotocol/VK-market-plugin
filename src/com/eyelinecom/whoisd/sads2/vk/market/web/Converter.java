@@ -33,6 +33,6 @@ public class Converter {
       userOrderItems.add(new OrderItemDetailed(item.getName(), itemQuantities.get(item.getId()), formattedPrice));
     }
     int totalCost = PriceUtils.getTotalCost(itemDescriptions, itemQuantities);
-    return new OrderDetailed(order.getId(), order.getPhoneNumber(), order.getMerchantEmail(), userOrderItems, PriceUtils.convert(totalCost) + "RUB");
+    return new OrderDetailed(order.getId(), order.getPhoneNumber(), order.getMerchantEmail(), userOrderItems, PriceUtils.convert(totalCost) + " RUB");
   }
 }
