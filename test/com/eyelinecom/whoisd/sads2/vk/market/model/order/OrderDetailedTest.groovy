@@ -9,7 +9,7 @@ import static org.junit.Assert.assertNotNull
 /**
  * author: Artem Voronov
  */
-class OrderTest extends DBTestBase {
+class OrderDetailedTest extends DBTestBase {
 
   static Order createCorrectOrder(Map overrides = [:]) {
     def defaultFields = [

@@ -3,6 +3,7 @@ package com.eyelinecom.whoisd.sads2.vk.market.web.servlets;
 import com.eyelinecom.whoisd.sads2.vk.market.model.order.Order;
 import com.eyelinecom.whoisd.sads2.vk.market.services.cart.CartService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.VkMarketServiceException;
+import com.eyelinecom.whoisd.sads2.vk.market.services.model.OrderDetailed;
 import com.eyelinecom.whoisd.sads2.vk.market.services.notification.NotificationProvider;
 import com.eyelinecom.whoisd.sads2.vk.market.services.order.OrderService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
@@ -44,11 +45,13 @@ public class VkOrderServlet extends VkHttpServlet {
 
     Order order = orderService.registerOrder(cartService.getCartItems(userId), merchantEmail, phoneNumber);
 
-    //TODO: clean cart
+    cartService.clean(userId);
 
-    notificationProvider.registerNewOrderNotification(locale, Converter.convert(order, vkUserId, vkAccessToken));
+    OrderDetailed orderDetailed = Converter.convert(order, vkUserId, vkAccessToken);
 
-    Renderer renderer = new OrderRegisteredRenderer(params.getLocale());
+    notificationProvider.registerNewOrderNotification(locale, orderDetailed);
+
+    Renderer renderer = new OrderRegisteredRenderer(params.getLocale(), orderDetailed);
     renderer.render(response, request.getContextPath(), params, urlResolver);
   }
 

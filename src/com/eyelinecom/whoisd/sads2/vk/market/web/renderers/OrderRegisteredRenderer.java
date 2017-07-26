@@ -1,11 +1,14 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.renderers;
 
+import com.eyelinecom.whoisd.sads2.vk.market.services.model.OrderDetailed;
+import com.eyelinecom.whoisd.sads2.vk.market.services.model.OrderItemDetailed;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -15,10 +18,12 @@ import java.util.ResourceBundle;
 public class OrderRegisteredRenderer extends Renderer {
 
   private final ResourceBundle bundle;
+  private final OrderDetailed orderDetailed;
 
-  public OrderRegisteredRenderer(Locale locale) {
+  public OrderRegisteredRenderer(Locale locale, OrderDetailed orderDetailed) {
     super(locale);
     this.bundle = ResourceBundle.getBundle(getClass().getName(), locale);
+    this.orderDetailed = orderDetailed;
   }
 
   @Override
@@ -33,7 +38,25 @@ public class OrderRegisteredRenderer extends Renderer {
 
     sb.append(pageStart());
     sb.append(divStart());
-    sb.append(bundle.getString("order.has.been.registered"));
+    sb.append(String.format(bundle.getString("order.is.registered"), orderDetailed.getId()));
+    sb.append(br());
+    sb.append(br());
+    sb.append(bundle.getString("order.list")).append(":");
+    sb.append(br());
+    List<OrderItemDetailed> items = orderDetailed.getItems();
+    int count = 0;
+    for (OrderItemDetailed it : items) {
+      sb.append(++count).append(". ").append(it.getName()).append(" x ").append(it.getQuantity()).append(". ")
+        .append(bundle.getString("price.per.unit")).append(" - ").append(it.getPrice());
+      sb.append(br());
+    }
+    sb.append(br());
+    sb.append(String.format(bundle.getString("total.cost"), orderDetailed.getTotalCost()));
+    sb.append(br());
+    sb.append(br());
+    sb.append(bundle.getString("wait.for.contact"));
+    sb.append(br());
+    sb.append(String.format(bundle.getString("merchant.email"), orderDetailed.getMerchantEmail()));
     sb.append(divEnd());
     sb.append(pageEnd());
 

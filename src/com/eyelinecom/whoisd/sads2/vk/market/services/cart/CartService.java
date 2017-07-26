@@ -86,4 +86,19 @@ public class CartService {
       return userCart;
     });
   }
+
+  public Cart clean(String userId) {
+    return db.tx(s -> {
+      User user = getOrCreateUser(userId, s);
+
+      Cart userCart = user.getCart();
+      List<CartItem> items = userCart.getItems();
+
+      for (Iterator<CartItem> iterator = items.iterator(); iterator.hasNext();) {
+        s.delete(iterator.next());
+        iterator.remove();
+      }
+      return userCart;
+    });
+  }
 }

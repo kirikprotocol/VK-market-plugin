@@ -2,25 +2,25 @@ package com.eyelinecom.whoisd.sads2.vk.market.model.item
 
 import com.eyelinecom.whoisd.sads2.vk.market.model.DBTestBase
 import com.eyelinecom.whoisd.sads2.vk.market.model.order.Order
-import com.eyelinecom.whoisd.sads2.vk.market.model.order.OrderTest
+import com.eyelinecom.whoisd.sads2.vk.market.model.order.OrderDetailedTest
 
 
 /**
  * author: Artem Voronov
  */
-class OrderItemTest extends DBTestBase {
+class OrderDetailedItemTest extends DBTestBase {
 
   static OrderItem createCorrectOrderItem(Map overrides = [:]) {
     def defaultFields = [
       vkItemId : 66886,
       quantity : 1,
-      order: OrderTest.createCorrectOrder()
+      order: OrderDetailedTest.createCorrectOrder()
     ]
     return new OrderItem(defaultFields + overrides)
   }
 
   void testSaveAndLoad() {
-    def order = OrderTest.createCorrectOrder()
+    def order = OrderDetailedTest.createCorrectOrder()
     def item = createCorrectOrderItem(order: order)
 
     tx { s ->
@@ -47,6 +47,6 @@ class OrderItemTest extends DBTestBase {
   static void assertOrderItemsEquals(OrderItem expected, OrderItem actual) {
     assertEquals expected.vkItemId, actual.vkItemId
     assertEquals expected.quantity, actual.quantity
-    OrderTest.assertOrdersEquals expected.order, actual.order
+    OrderDetailedTest.assertOrdersEquals expected.order, actual.order
   }
 }

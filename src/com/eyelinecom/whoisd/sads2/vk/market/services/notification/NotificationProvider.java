@@ -1,7 +1,7 @@
 package com.eyelinecom.whoisd.sads2.vk.market.services.notification;
 
 
-import com.eyelinecom.whoisd.sads2.vk.market.services.model.Order;
+import com.eyelinecom.whoisd.sads2.vk.market.services.model.OrderDetailed;
 
 import java.util.Locale;
 
@@ -10,6 +10,6 @@ import java.util.Locale;
  */
 public interface NotificationProvider {
 
-  void registerNewOrderNotification(Locale locale, Order order);
+  void registerNewOrderNotification(Locale locale, OrderDetailed orderDetailed);
 
 }

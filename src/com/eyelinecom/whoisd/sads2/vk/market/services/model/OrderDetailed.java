@@ -5,14 +5,14 @@ import java.util.List;
 /**
  * author: Artem Voronov
  */
-public class Order {
+public class OrderDetailed {
   private final int id;
   private final String userPhoneNumber;
   private final String merchantEmail;
-  private final List<OrderItem> items;
+  private final List<OrderItemDetailed> items;
   private final String totalCost;
 
-  public Order(int id, String userPhoneNumber, String merchantEmail, List<OrderItem> items, String totalCost) {
+  public OrderDetailed(int id, String userPhoneNumber, String merchantEmail, List<OrderItemDetailed> items, String totalCost) {
     this.id = id;
     this.userPhoneNumber = userPhoneNumber;
     this.merchantEmail = merchantEmail;
@@ -32,7 +32,7 @@ public class Order {
     return merchantEmail;
   }
 
-  public List<OrderItem> getItems() {
+  public List<OrderItemDetailed> getItems() {
     return items;
   }
 
