@@ -1,5 +1,6 @@
 package com.eyelinecom.whoisd.sads2.vk.market.services.notification;
 
+import com.eyelinecom.whoisd.sads2.vk.market.web.model.Order;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -36,10 +37,10 @@ class TemplateService {
     configuration.setClassForTemplateLoading(TemplateService.class, "templates");
   }
 
-  MailEntity getOrderInfoTemplate(Locale locale, String phoneNumber) {
+  MailEntity getOrderInfoTemplate(Locale locale, Order order) {
     String templateName = getTemplateName(Templates.ORDER, locale);
     Map<String, Object> parameters = new HashMap<>();
-    parameters.put("phoneNumber", phoneNumber);
+    parameters.put("order", order);
     return getMail(templateName, parameters);
   }
 

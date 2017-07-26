@@ -4,8 +4,11 @@ import com.eyelinecom.whoisd.sads2.vk.market.model.item.CartItem;
 import com.eyelinecom.whoisd.sads2.vk.market.model.user.User;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * author: Artem Voronov
@@ -48,5 +51,13 @@ public class Cart {
   @Transient
   public boolean isEmpty() {
     return items.isEmpty();
+  }
+
+  @Transient
+  public Map<Integer, Integer> getItemQuantities() {
+    if (isEmpty())
+      return Collections.emptyMap();
+
+    return items.stream().collect(Collectors.toMap(CartItem::getVkItemId, CartItem::getQuantity));
   }
 }

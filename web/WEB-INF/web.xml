@@ -94,6 +94,24 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>vkAskPhoneNumberServlet</servlet-name>
+    <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkAskPhoneNumberServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>vkAskPhoneNumberServlet</servlet-name>
+    <url-pattern>/ask-phone/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>vkOrderServlet</servlet-name>
+    <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkOrderServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>vkOrderServlet</servlet-name>
+    <url-pattern>/order/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>vkExitServlet</servlet-name>
     <servlet-class>com.eyelinecom.whoisd.sads2.vk.market.web.servlets.VkExitServlet</servlet-class>
   </servlet>

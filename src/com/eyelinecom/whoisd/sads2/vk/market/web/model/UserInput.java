@@ -1,4 +1,4 @@
-package com.eyelinecom.whoisd.sads2.vk.market.web.util;
+package com.eyelinecom.whoisd.sads2.vk.market.web.model;
 
 /**
  * author: Artem Voronov

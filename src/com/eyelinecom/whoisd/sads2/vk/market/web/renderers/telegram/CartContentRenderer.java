@@ -5,7 +5,8 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.market.Price;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
-import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputJsonBuilder;
+import com.eyelinecom.whoisd.sads2.vk.market.web.util.PriceUtils;
+import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class CartContentRenderer extends Renderer {
     this.itemId = itemId;
     this.itemDescriptions = itemDescriptions;
     this.itemQuantities = itemQuantities;
-    this.totalCost = itemDescriptions.stream().map(it -> Integer.parseInt(it.getPrice().getPrice()) * itemQuantities.get(it.getId())).mapToInt(Integer::intValue).sum();
+    this.totalCost = PriceUtils.getTotalCost(itemDescriptions, itemQuantities);
     this.fromInlineButton = fromInlineButton;
   }
 
@@ -57,30 +58,30 @@ public class CartContentRenderer extends Renderer {
       for (Item item : itemDescriptions) {
         Price price = item.getPrice();
         sb.append(++count).append(". ").append(item.getName()).append(" x ").append(itemQuantities.get(item.getId())).append(", ")
-          .append(convert(Integer.parseInt(price.getPrice()))).append(" ").append("RUB").append(" - ").append(bundle.getString("per.unit"));
+          .append(PriceUtils.convert(Integer.parseInt(price.getPrice()))).append(" ").append("RUB").append(" - ").append(bundle.getString("per.unit"));
         sb.append(br());
       }
 
       //TODO: currency в текущей версии API VK всегда равен RUB
       //TODO: нужно рассчитывать для общего случая
       sb.append(br());
-      sb.append(bStart()).append(bundle.getString("total.cost")).append(": ").append(convert(totalCost)).append(" ").append("RUB").append(bEnd());
+      sb.append(bStart()).append(bundle.getString("total.cost")).append(": ").append(PriceUtils.convert(totalCost)).append(" ").append("RUB").append(bEnd());
 
     }
     sb.append(divEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     if (categoryId == null && itemId == null) {
-      sb.append(button(UserInputJsonBuilder.json(), bundle.getString("back"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
+      sb.append(button(UserInputUtils.json(), bundle.getString("back"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
     } else {
-      sb.append(button(UserInputJsonBuilder.json(categoryId, itemId, messageId), bundle.getString("back"), requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
+      sb.append(button(UserInputUtils.json(categoryId, itemId, messageId), bundle.getString("back"), requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
     }
     sb.append(buttonsEnd());
     if (!itemDescriptions.isEmpty()) {
       sb.append(buttonsStart(getInlineButtonsAttrs()));
-      sb.append(button(UserInputJsonBuilder.json(categoryId, itemId, messageId), bundle.getString("delete.from.cart"), requestParams.getPluginParams(), ctxPath, "/choose-item-in-cart", urlResolver));
+      sb.append(button(UserInputUtils.json(categoryId, itemId, messageId), bundle.getString("delete.from.cart"), requestParams.getPluginParams(), ctxPath, "/choose-item-in-cart", urlResolver));
       sb.append(buttonsEnd());
       sb.append(buttonsStart(getInlineButtonsAttrs()));
-      sb.append(button("", bundle.getString("proceed.to.checkout"), requestParams.getPluginParams(), ctxPath, "/order", urlResolver));//TODO
+      sb.append(button(UserInputUtils.json(), bundle.getString("proceed.to.checkout"), requestParams.getPluginParams(), ctxPath, "/ask-phone", urlResolver));
       sb.append(buttonsEnd());
     }
     sb.append(buttonsStart(getInlineButtonsAttrs()));
@@ -90,12 +91,4 @@ public class CartContentRenderer extends Renderer {
     return sb.toString();
   }
 
-  private static String convert(Integer totalCost) {
-    if(totalCost == null)
-      throw new IllegalArgumentException("null total cost");
-
-    int i = totalCost / 100;
-    int f = totalCost % 100;
-    return "" + i + "." + (f < 10 ? "0" + f : f);
-  }
 }

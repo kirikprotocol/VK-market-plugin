@@ -4,7 +4,7 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.market.Item;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
-import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputJsonBuilder;
+import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -46,11 +46,11 @@ public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
     sb.append(divEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     for (Item item : itemDescriptions) {
-      sb.append(button(UserInputJsonBuilder.json(item.getCategory().getId(), item.getId(), messageId), item.getName(), requestParams.getPluginParams(), ctxPath, "/delete-from-cart", urlResolver));
+      sb.append(button(UserInputUtils.json(item.getCategory().getId(), item.getId(), messageId), item.getName(), requestParams.getPluginParams(), ctxPath, "/delete-from-cart", urlResolver));
     }
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(UserInputJsonBuilder.json(categoryId, itemId, messageId, true), bundle.getString("back.to.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
+    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId, true), bundle.getString("back.to.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
     sb.append(buttonsEnd());
     sb.append(pageEnd());
 

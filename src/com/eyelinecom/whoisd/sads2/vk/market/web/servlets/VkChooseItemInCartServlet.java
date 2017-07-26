@@ -9,8 +9,8 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.Protocol;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram.ChooseItemInCartForDeletingTelegramRenderer;
-import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInput;
-import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputParser;
+import com.eyelinecom.whoisd.sads2.vk.market.web.model.UserInput;
+import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputUtils;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +31,7 @@ public class VkChooseItemInCartServlet extends VkHttpServlet {
 
   protected void handleRequest(HttpServletRequest request, HttpServletResponse response, Protocol protocol, RequestParameters params) throws VkMarketServiceException, IOException {
     String userId = params.getUserId();
-    UserInput userInput = UserInputParser.decodeAndParse(params.getUserInput(), userId);
+    UserInput userInput = UserInputUtils.decodeAndParse(params.getUserInput(), userId);
     Cart userCart = cartService.getCartItems(userId);
 
     VkMarketService vk = new VkMarketService(params.getVkUserId(), params.getVkAccessToken());

@@ -7,8 +7,8 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.Protocol;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram.CategoryItemsTelegramRenderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
-import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInput;
-import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputParser;
+import com.eyelinecom.whoisd.sads2.vk.market.web.model.UserInput;
+import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputUtils;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +29,7 @@ public class VkCategoryItemsServlet extends VkHttpServlet {
 
   @Override
   protected void handleRequest(HttpServletRequest request, HttpServletResponse response, Protocol protocol, RequestParameters params) throws VkMarketServiceException, IOException {
-    UserInput value = UserInputParser.decodeAndParse(params.getUserInput(), params.getUserId());
+    UserInput value = UserInputUtils.decodeAndParse(params.getUserInput(), params.getUserId());
 
     VkMarketService vk = new VkMarketService(params.getVkUserId(), params.getVkAccessToken());
     List<Item> categoryItems = vk.getItemsByCategory(value.getCategoryId());

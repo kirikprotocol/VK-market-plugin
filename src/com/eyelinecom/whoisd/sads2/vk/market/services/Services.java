@@ -55,7 +55,7 @@ public class Services {
     }
     catch(Exception e) {
       throw new ServicesException("Error during MailService initialization.", e);
-  }
+    }
   }
 
   public UrlResolver getUrlResolver() {

@@ -4,7 +4,7 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.market.ItemDetailed;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
-import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputJsonBuilder;
+import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -50,18 +50,18 @@ public class DeleteFromCartTelegramRenderer extends Renderer {
     sb.append(divEnd());
     if (!isCartEmpty) {
       sb.append(buttonsStart(getInlineButtonsAttrs()));
-      sb.append(button(UserInputJsonBuilder.json(categoryId, itemId, messageId), bundle.getString("delete.more"), requestParams.getPluginParams(), ctxPath, "/choose-item-in-cart", urlResolver));
+      sb.append(button(UserInputUtils.json(categoryId, itemId, messageId), bundle.getString("delete.more"), requestParams.getPluginParams(), ctxPath, "/choose-item-in-cart", urlResolver));
       sb.append(buttonsEnd());
     }
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     sb.append(button("", bundle.getString("continue.shopping"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(UserInputJsonBuilder.json(categoryId, null, messageId, true), bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
+    sb.append(button(UserInputUtils.json(categoryId, null, messageId, true), bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
     sb.append(buttonsEnd());
     if (!isCartEmpty) {
       sb.append(buttonsStart(getInlineButtonsAttrs()));
-      sb.append(button("", bundle.getString("proceed.to.checkout"), requestParams.getPluginParams(), ctxPath, "/order", urlResolver));//TODO
+      sb.append(button(UserInputUtils.json(), bundle.getString("proceed.to.checkout"), requestParams.getPluginParams(), ctxPath, "/ask-phone", urlResolver));
       sb.append(buttonsEnd());
     }
     sb.append(buttonsStart(getInlineButtonsAttrs()));

@@ -9,8 +9,8 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.Protocol;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram.DeleteFromCartTelegramRenderer;
-import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInput;
-import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputParser;
+import com.eyelinecom.whoisd.sads2.vk.market.web.model.UserInput;
+import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputUtils;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +30,7 @@ public class VkDeleteFromCartServlet extends VkHttpServlet {
 
   protected void handleRequest(HttpServletRequest request, HttpServletResponse response, Protocol protocol, RequestParameters params) throws IOException, VkMarketServiceException {
     String userId = params.getUserId();
-    UserInput value = UserInputParser.decodeAndParse(params.getUserInput(), userId);
+    UserInput value = UserInputUtils.decodeAndParse(params.getUserInput(), userId);
 
     Cart userCart = cartService.removeFromCart(userId, value.getItemId());
 

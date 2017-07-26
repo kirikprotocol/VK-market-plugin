@@ -233,4 +233,12 @@ public abstract class Renderer {
     return attrs;
   }
 
+  protected String anyInput(Map<String, String> params, String ctxPath, String urlPath) throws IOException {
+    return divStart()
+      + "<input name=\"user_input\" value=\"\" type=\"text\" navigationId=\"submit\"/>"
+      + divEnd()
+      + "<navigation id=\"submit\">"
+      + "<link pageId=\"" + formatPageUrl(params, ctxPath + urlPath, true, true) + "\"/>"
+      + "</navigation>";
+  }
 }

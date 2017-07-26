@@ -1,5 +1,7 @@
 package com.eyelinecom.whoisd.sads2.vk.market.services.notification;
 
+import com.eyelinecom.whoisd.sads2.vk.market.web.model.Order;
+
 import java.util.Locale;
 
 /**
@@ -15,8 +17,8 @@ public class NotificationService implements NotificationProvider {
     this.mailService = mailService;
   }
 
-  public void registerNewOrderNotification(Locale locale, String phoneNumber, String merchantEmail) {
-    MailEntity mail = mailTemplateService.getOrderInfoTemplate(locale, phoneNumber);
-    mailService.sendMail(merchantEmail, mail);
+  public void registerNewOrderNotification(Locale locale, Order order) {
+    MailEntity mail = mailTemplateService.getOrderInfoTemplate(locale, order);
+    mailService.sendMail(order.getMerchantEmail(), mail);
   }
 }
