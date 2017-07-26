@@ -1,11 +1,14 @@
 package com.eyelinecom.whoisd.sads2.vk.market.model.order;
 
+import com.eyelinecom.whoisd.sads2.vk.market.model.item.CartItem;
 import com.eyelinecom.whoisd.sads2.vk.market.model.item.OrderItem;
 import com.eyelinecom.whoisd.sads2.vk.market.model.user.User;
 
 import javax.persistence.*;
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * author: Artem Voronov
@@ -26,7 +29,7 @@ public class Order {
   private String merchantEmail;
 
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
-  private List<OrderItem> items = new LinkedList<>();
+  private List<OrderItem> items;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id", unique = false, nullable = false)
@@ -66,6 +69,19 @@ public class Order {
 
   public void setUser(User user) {
     this.user = user;
+  }
+
+  @Transient
+  public boolean isEmpty() {
+    return items == null || items.isEmpty();
+  }
+
+  @Transient
+  public Map<Integer, Integer> getItemQuantities() {
+    if (isEmpty())
+      return Collections.emptyMap();
+
+    return items.stream().collect(Collectors.toMap(OrderItem::getVkItemId, OrderItem::getQuantity));
   }
 
 }

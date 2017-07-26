@@ -23,7 +23,7 @@ public class Cart {
   private Integer id;
 
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart")
-  private List<CartItem> items = new LinkedList<>();
+  private List<CartItem> items;
 
   @OneToOne(fetch = FetchType.EAGER, mappedBy = "cart")
   private User user;
@@ -50,7 +50,12 @@ public class Cart {
 
   @Transient
   public boolean isEmpty() {
-    return items.isEmpty();
+    return items == null || items.isEmpty();
+  }
+
+  @Transient
+  public int size() {
+    return items.size();
   }
 
   @Transient

@@ -1,7 +1,7 @@
 package com.eyelinecom.whoisd.sads2.vk.market.services.notification;
 
 
-import com.eyelinecom.whoisd.sads2.vk.market.web.model.Order;
+import com.eyelinecom.whoisd.sads2.vk.market.services.model.Order;
 
 import java.util.Locale;
 

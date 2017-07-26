@@ -1,6 +1,6 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.util;
 
-import com.eyelinecom.whoisd.sads2.vk.market.web.model.UserInput;
+import com.eyelinecom.whoisd.sads2.vk.market.services.model.UserInput;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

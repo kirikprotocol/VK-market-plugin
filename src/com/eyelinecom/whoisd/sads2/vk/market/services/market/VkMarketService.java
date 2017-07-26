@@ -1,6 +1,7 @@
 package com.eyelinecom.whoisd.sads2.vk.market.services.market;
 
 import com.eyelinecom.whoisd.sads2.vk.market.model.cart.Cart;
+import com.eyelinecom.whoisd.sads2.vk.market.model.order.Order;
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
@@ -136,11 +137,21 @@ public class VkMarketService {
       throw new VkMarketServiceException(e.getMessage(), e);
     }
   }
+
   public List<Item> getItemsById(Cart userCart) throws VkMarketServiceException {
     if (userCart.isEmpty())
       return Collections.emptyList();
 
     List<Integer> itemIds = userCart.getItems().stream().map(it->it.getVkItemId()).collect(Collectors.toList());
+
+    return getItemsById(itemIds);
+  }
+
+  public List<Item> getItemsById(Order order) throws VkMarketServiceException {
+    if (order.isEmpty())
+      return Collections.emptyList();
+
+    List<Integer> itemIds = order.getItems().stream().map(it->it.getVkItemId()).collect(Collectors.toList());
 
     return getItemsById(itemIds);
   }

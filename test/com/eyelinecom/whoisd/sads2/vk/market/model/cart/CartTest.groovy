@@ -11,7 +11,10 @@ import static org.junit.Assert.assertNotNull
 class CartTest extends DBTestBase {
 
   static Cart createCorrectCart(Map overrides = [:]) {
-    return new Cart(overrides)
+    def defaultFields = [
+      items: new LinkedList()
+    ]
+    return new Cart(defaultFields + overrides)
   }
 
   void testSaveAndLoad() {

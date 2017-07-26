@@ -10,4 +10,4 @@ ${item?counter}. ${item.getName()} x ${item.getQuantity()}. Price per unit: ${it
 <br>
 Total cost: ${order.getTotalCost()}
 
-<#-- @ftlvariable name="order" type="com.eyelinecom.whoisd.sads2.vk.market.web.model.Order" -->
+<#-- @ftlvariable name="order" type="com.eyelinecom.whoisd.sads2.vk.market.services.model.Order" -->

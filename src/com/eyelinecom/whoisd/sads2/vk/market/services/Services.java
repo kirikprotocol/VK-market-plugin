@@ -7,6 +7,7 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.notification.MailService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.notification.MailServiceImpl;
 import com.eyelinecom.whoisd.sads2.vk.market.services.notification.NotificationProvider;
 import com.eyelinecom.whoisd.sads2.vk.market.services.notification.NotificationService;
+import com.eyelinecom.whoisd.sads2.vk.market.services.order.OrderService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.ShortUrlService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import org.apache.log4j.Logger;
@@ -27,12 +28,14 @@ public class Services {
   private final DBService dbService;
   private final CartService cartService;
   private final NotificationProvider notificationProvider;
+  private final OrderService orderService;
 
   public Services(XmlConfigSection config) throws ServicesException {
     this.urlResolver = new ShortUrlService(log);
     this.dbService = initDBService(config);
     this.cartService = new CartService(dbService);
     this.notificationProvider = initNotificationProvider(config, Executors.newSingleThreadExecutor());
+    this.orderService = new OrderService(dbService);
   }
 
   private static DBService initDBService(XmlConfigSection config) throws ServicesException {
@@ -72,5 +75,9 @@ public class Services {
 
   public NotificationProvider getNotificationProvider() {
     return notificationProvider;
+  }
+
+  public OrderService getOrderService() {
+    return orderService;
   }
 }

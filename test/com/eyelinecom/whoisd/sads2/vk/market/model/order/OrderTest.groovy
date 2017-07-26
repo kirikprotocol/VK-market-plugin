@@ -15,7 +15,8 @@ class OrderTest extends DBTestBase {
     def defaultFields = [
       phoneNumber : '71112223344',
       merchantEmail : "unclebob@example.com",
-      user: UserTest.createCorrectUser()
+      user: UserTest.createCorrectUser(),
+      items: new LinkedList()
     ]
     return new Order(defaultFields + overrides)
   }

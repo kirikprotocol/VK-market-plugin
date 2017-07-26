@@ -5,6 +5,7 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.Services;
 import com.eyelinecom.whoisd.sads2.vk.market.services.cart.CartService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.db.DBService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.notification.NotificationProvider;
+import com.eyelinecom.whoisd.sads2.vk.market.services.order.OrderService;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -46,6 +47,11 @@ public class WebContext {
   @Produces
   public NotificationProvider getNotificationProvider() {
     return services.getNotificationProvider();
+  }
+
+  @Produces
+  public OrderService getOrderService() {
+    return services.getOrderService();
   }
 
   public static String getPushUrl() {

@@ -1,4 +1,4 @@
-package com.eyelinecom.whoisd.sads2.vk.market.web.model;
+package com.eyelinecom.whoisd.sads2.vk.market.services.model;
 
 import java.util.List;
 
