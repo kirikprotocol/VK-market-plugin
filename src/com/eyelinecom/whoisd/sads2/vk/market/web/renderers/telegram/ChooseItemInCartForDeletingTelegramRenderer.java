@@ -16,19 +16,26 @@ import java.util.*;
  */
 public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
 
+  private static final int BUTTONS_PER_ROW = 2;
+  private static final int PARTITION_SIZE = 6;
+
   private final ResourceBundle bundle;
   private final List<Item> itemDescriptions;
   private final String messageId;
   private final Integer itemId;
   private final Integer categoryId;
+  private final Integer cartListSection;
+  private final Navigation navigation;
 
-  public ChooseItemInCartForDeletingTelegramRenderer(Locale locale, List<Item> itemDescriptions, String messageId, Integer categoryId, Integer itemId) {
+  public ChooseItemInCartForDeletingTelegramRenderer(Locale locale, List<Item> itemDescriptions, String messageId, Integer categoryId, Integer itemId, Integer cartListSection) {
     super(locale);
     this.bundle = ResourceBundle.getBundle(getClass().getName(), locale);
     this.itemDescriptions = itemDescriptions;
     this.messageId = messageId;
     this.categoryId = categoryId;
     this.itemId = itemId;
+    this.cartListSection = cartListSection;
+    this.navigation = new Navigation();
   }
 
   @Override
@@ -42,17 +49,21 @@ public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
     StringBuilder sb = new StringBuilder();
 
     String backBtnVal = UserInputUtils.toJsonAndEncode(new UserInput.Builder().category(categoryId).item(itemId).message(messageId).inline(true).build());
-    UserInput input = new UserInput.Builder().message(messageId).build();
+
 
     sb.append(pageStart(getEditablePageAttrs(messageId, true)));
     sb.append(divStart());
     sb.append(bundle.getString("choose.item"));
     sb.append(divEnd());
-    sb.append(buttonsStart(getInlineButtonsAttrs()));
-    for (Item item : itemDescriptions) {
-      sb.append(button(createChooseBtnVal(input, item.getCategory().getId(), item.getId()), item.getName(), requestParams.getPluginParams(), ctxPath, "/delete-from-cart", urlResolver));
+
+    int itemsCount = itemDescriptions.size();
+
+    if (itemsCount <= PARTITION_SIZE) {
+      renderOnePart(itemDescriptions, sb, ctxPath, requestParams, urlResolver);
+    } else {
+      renderAllParts(sb, ctxPath, requestParams, urlResolver);
     }
-    sb.append(buttonsEnd());
+
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     sb.append(button(backBtnVal, bundle.getString("back.to.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
     sb.append(buttonsEnd());
@@ -65,6 +76,85 @@ public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
     input.setCategoryId(categoryId);
     input.setItemId(itemId);
     return UserInputUtils.toJsonAndEncode(input);
+  }
+
+  private void renderOnePart(List<Item> partition, StringBuilder sb, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
+    UserInput input = new UserInput.Builder().message(messageId).build();
+    int counter = 0;
+
+    for (Item item : partition) {
+      if (counter == 0)
+        sb.append(buttonsStart(getInlineButtonsAttrs()));
+
+      sb.append(button(createChooseBtnVal(input, item.getCategory().getId(), item.getId()), item.getName(), requestParams.getPluginParams(), ctxPath, "/delete-from-cart", urlResolver));
+      counter++;
+
+      if (counter == BUTTONS_PER_ROW) {
+        sb.append(buttonsEnd());
+        counter = 0;
+      }
+    }
+
+    if (counter != 0)
+      sb.append(buttonsEnd());
+  }
+
+  private void renderAllParts(StringBuilder sb, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
+    UserInput input = new UserInput.Builder().category(categoryId).item(itemId).message(messageId).build();
+    String prevSectionBtnVal = createSectionBtnVal(input, navigation.prevSection);
+    String nextSectionBtnVal = createSectionBtnVal(input, navigation.nextSection);
+
+    int itemsSize = itemDescriptions.size();
+    List<List<Item>> partitions = new LinkedList<>();
+    for (int i = 0; i < itemsSize; i += PARTITION_SIZE) {
+      partitions.add(itemDescriptions.subList(i, Math.min(i + PARTITION_SIZE, itemsSize)));
+    }
+
+    List<Item> part = partitions.get(navigation.currSection);
+    renderOnePart(part, sb, ctxPath, requestParams, urlResolver);
+
+    sb.append(buttonsStart(getInlineButtonsAttrs()));
+    sb.append(button(prevSectionBtnVal, "&lt;", requestParams.getPluginParams(), ctxPath, "/choose-item-in-cart", urlResolver));
+    sb.append(button(nextSectionBtnVal, "&gt;", requestParams.getPluginParams(), ctxPath, "/choose-item-in-cart", urlResolver));
+    sb.append(buttonsEnd());
+  }
+
+  private static String createSectionBtnVal(UserInput input, Integer cartSection) throws IOException {
+    input.setCartListSection(cartSection);
+    return UserInputUtils.toJsonAndEncode(input);
+  }
+
+  //TODO: unify
+  private class Navigation {
+
+    private final int prevSection;
+    private final int currSection;
+    private final int nextSection;
+    private final int sectionsCount;
+
+    private Navigation() {
+      sectionsCount = findSectionsCount();
+      currSection = findCurrentExtraPhotoId();
+      prevSection = currSection == 0 ? sectionsCount - 1 : currSection - 1;
+      nextSection = currSection == sectionsCount - 1 ? 0 : currSection + 1;
+    }
+
+    private int findCurrentExtraPhotoId() {
+      if(cartListSection == null)
+        return 0;
+
+      return cartListSection;
+    }
+
+    private int findSectionsCount() {
+      int modResult = itemDescriptions.size() % PARTITION_SIZE;
+      int divResult = itemDescriptions.size() / PARTITION_SIZE;
+
+      if (modResult == 0)
+        return divResult;
+
+      return divResult + 1;
+    }
   }
 
 }

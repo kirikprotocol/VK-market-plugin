@@ -84,6 +84,7 @@ public class CategoryItemsTelegramRenderer extends Renderer {
     return UserInputUtils.toJsonAndEncode(input);
   }
 
+  //TODO: unify
   private class Navigation {
 
     private final Item prevItem;

@@ -67,9 +67,9 @@ public class CartContentRenderer extends Renderer {
       sb.append(divEnd());
     } else {
       if (itemDescriptions.size() <= PARTITION_SIZE) {
-        monolith(sb);
+        renderAll(sb);
       } else {
-        partitions(sb, ctxPath, requestParams, urlResolver);
+        renderSection(sb, ctxPath, requestParams, urlResolver);
       }
     }
     sb.append(buttonsStart(getInlineButtonsAttrs()));
@@ -107,7 +107,7 @@ public class CartContentRenderer extends Renderer {
 
   }
 
-  private void monolith(StringBuilder sb) {
+  private void renderAll(StringBuilder sb) {
     int count = 0;
     for (Item item : itemDescriptions) {
       Price price = item.getPrice();
@@ -119,7 +119,7 @@ public class CartContentRenderer extends Renderer {
     sb.append(divEnd());
   }
 
-  private void partitions(StringBuilder sb, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
+  private void renderSection(StringBuilder sb, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     UserInput input = new UserInput.Builder().category(categoryId).item(itemId).message(messageId).inline(true).build();
     String prevSectionBtnVal = createSectionBtnVal(input, navigation.prevSection);
     String nextSectionBtnVal = createSectionBtnVal(input, navigation.nextSection);
@@ -158,6 +158,7 @@ public class CartContentRenderer extends Renderer {
     sb.append(buttonsEnd());
   }
 
+  //TODO: unify
   private class Navigation {
 
     private final int prevSection;
@@ -188,10 +189,5 @@ public class CartContentRenderer extends Renderer {
 
       return divResult + 1;
     }
-
-    public int getSectionsCount() {
-      return sectionsCount;
-    }
-
   }
 }

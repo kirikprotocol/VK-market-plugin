@@ -37,7 +37,8 @@ public class VkChooseItemInCartServlet extends VkHttpServlet {
     VkMarketService vk = new VkMarketService(params.getVkUserId(), params.getVkAccessToken());
     List<Item> itemDescriptions = vk.getItemsById(userCart);
 
-    Renderer renderer = new ChooseItemInCartForDeletingTelegramRenderer(params.getLocale(), itemDescriptions, userInput.getMessageId(), userInput.getCategoryId(), userInput.getItemId());
+    Renderer renderer = new ChooseItemInCartForDeletingTelegramRenderer(params.getLocale(), itemDescriptions, userInput.getMessageId(),
+      userInput.getCategoryId(), userInput.getItemId(), userInput.getCartListSection());
     renderer.render(response, request.getContextPath(), params, urlResolver);
 
   }

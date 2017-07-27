@@ -4,6 +4,7 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.model.OrderDetailed;
 import com.eyelinecom.whoisd.sads2.vk.market.services.model.OrderItemDetailed;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
+import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -31,8 +32,6 @@ public class OrderRegisteredRenderer extends Renderer {
     String askPhoneNumber = getAskPhoneNumberPage(ctxPath, requestParams, urlResolver);
 
     sendResponse(response, requestParams, Arrays.asList(askPhoneNumber));
-
-    //TODO: redirect to exit
   }
 
   private String getAskPhoneNumberPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
@@ -47,7 +46,7 @@ public class OrderRegisteredRenderer extends Renderer {
     sb.append(br());
     List<OrderItemDetailed> items = orderDetailed.getItems();
     int count = 0;
-    for (OrderItemDetailed it : items) {
+    for (OrderItemDetailed it : items) {//TODO: если список будет большим, использовать пуши или вообще сделать отправку по email
       sb.append(++count).append(". ").append(it.getName()).append(" x ").append(it.getQuantity()).append(". ")
         .append(bundle.getString("price.per.unit")).append(" - ").append(it.getPrice());
       sb.append(br());
@@ -60,6 +59,10 @@ public class OrderRegisteredRenderer extends Renderer {
     sb.append(br());
     sb.append(String.format(bundle.getString("merchant.email"), orderDetailed.getMerchantEmail()));
     sb.append(divEnd());
+    sb.append(buttonsStart());
+    sb.append(button("", bundle.getString("continue.shopping"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
+    sb.append(buttonExit(requestParams.getPluginParams(), ctxPath));
+    sb.append(buttonsEnd());
     sb.append(pageEnd());
 
     return sb.toString();
