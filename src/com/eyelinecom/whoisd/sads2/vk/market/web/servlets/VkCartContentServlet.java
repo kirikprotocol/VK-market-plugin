@@ -39,7 +39,8 @@ public class VkCartContentServlet extends VkHttpServlet {
     List<Item> itemDescriptions = vk.getItemsById(userCart);
     Map<Integer, Integer> itemQuantities = userCart.getItemQuantities();
 
-    Renderer renderer = new CartContentRenderer(params.getLocale(), itemDescriptions, itemQuantities, userInput.getMessageId(), userInput.getCategoryId(), userInput.getItemId(), userInput.getFromInlineButton());
+    Renderer renderer = new CartContentRenderer(params.getLocale(), itemDescriptions, itemQuantities, userInput.getMessageId(),
+      userInput.getCategoryId(), userInput.getItemId(), userInput.getFromInlineButton(), userInput.getCartListSection());
     renderer.render(response, request.getContextPath(), params, urlResolver);
   }
 }

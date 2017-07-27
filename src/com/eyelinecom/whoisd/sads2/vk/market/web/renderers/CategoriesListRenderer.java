@@ -1,6 +1,7 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.renderers;
 
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.Category;
+import com.eyelinecom.whoisd.sads2.vk.market.services.model.UserInput;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
 import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputUtils;
@@ -32,6 +33,8 @@ public class CategoriesListRenderer extends Renderer {
   public void render(HttpServletResponse response, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
 
+    UserInput input = new UserInput();
+
     sb.append(pageStart());
     sb.append(divStart());
     sb.append(bundle.getString("text"));
@@ -40,15 +43,20 @@ public class CategoriesListRenderer extends Renderer {
     sb.append(buttonsStart());
 
     for(Category cat : categories) {
-      sb.append(button(UserInputUtils.json(cat.getId()), cat.getName(), requestParams.getPluginParams(), ctxPath, "/category"));
+      sb.append(button(createChooseCategoryBtnVal(input, cat.getId()), cat.getName(), requestParams.getPluginParams(), ctxPath, "/category"));
     }
-    sb.append(button(UserInputUtils.json(), bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
+    sb.append(button(UserInputUtils.empty(), bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
     sb.append(buttonExit(requestParams.getPluginParams(), ctxPath));
 
     sb.append(buttonsEnd());
     sb.append(pageEnd());
 
     sendResponse(response, requestParams, Collections.singletonList(sb.toString()));
+  }
+
+  private static String createChooseCategoryBtnVal(UserInput input, Integer categoryId) throws IOException {
+    input.setCategoryId(categoryId);
+    return UserInputUtils.toJsonAndEncode(input);
   }
 
 }

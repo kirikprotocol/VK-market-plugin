@@ -1,6 +1,7 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram;
 
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.Item;
+import com.eyelinecom.whoisd.sads2.vk.market.services.model.UserInput;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
@@ -40,21 +41,30 @@ public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
   private String getChooseItemPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
 
+    String backBtnVal = UserInputUtils.toJsonAndEncode(new UserInput.Builder().category(categoryId).item(itemId).message(messageId).inline(true).build());
+    UserInput input = new UserInput.Builder().message(messageId).build();
+
     sb.append(pageStart(getEditablePageAttrs(messageId, true)));
     sb.append(divStart());
     sb.append(bundle.getString("choose.item"));
     sb.append(divEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     for (Item item : itemDescriptions) {
-      sb.append(button(UserInputUtils.json(item.getCategory().getId(), item.getId(), messageId), item.getName(), requestParams.getPluginParams(), ctxPath, "/delete-from-cart", urlResolver));
+      sb.append(button(createChooseBtnVal(input, item.getCategory().getId(), item.getId()), item.getName(), requestParams.getPluginParams(), ctxPath, "/delete-from-cart", urlResolver));
     }
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId, true), bundle.getString("back.to.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
+    sb.append(button(backBtnVal, bundle.getString("back.to.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
     sb.append(buttonsEnd());
     sb.append(pageEnd());
 
     return sb.toString();
+  }
+
+  private static String createChooseBtnVal(UserInput input, Integer categoryId, Integer itemId) throws IOException {
+    input.setCategoryId(categoryId);
+    input.setItemId(itemId);
+    return UserInputUtils.toJsonAndEncode(input);
   }
 
 }

@@ -1,6 +1,7 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram;
 
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.ItemDetailed;
+import com.eyelinecom.whoisd.sads2.vk.market.services.model.UserInput;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
@@ -49,25 +50,30 @@ public class AddToCartTelegramRenderer extends Renderer {
 
   private String getItemAddedPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
+
+    String addMoreBtnVal = UserInputUtils.toJsonAndEncode(new UserInput.Builder().category(categoryId).item(itemId).message(messageId).photo(extraPhotoId).build());
+    String openCartBtnVal = UserInputUtils.toJsonAndEncode(new UserInput.Builder().category(categoryId).item(itemId).message(messageId).build());
+    String empty = UserInputUtils.empty();
+
     sb.append(pageStart((getEditablePageAttrs(messageId, itemId != null))));
     sb.append(divStart());
     if (!extraPhotoUrls.isEmpty()) {
-      sb.append(extraPhotoUrls.get(extraPhotoId));
+      sb.append(extraPhotoUrls.get(extraPhotoId == null ? 0 : extraPhotoId));
       sb.append(br());
     }
     sb.append(bStart()).append(String.format(bundle.getString("added.quantity"), name, quantity)).append(bEnd());
     sb.append(divEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId, extraPhotoId), bundle.getString("add.more"), requestParams.getPluginParams(), ctxPath, "/ask-quantity", urlResolver));
+    sb.append(button(addMoreBtnVal, bundle.getString("add.more"), requestParams.getPluginParams(), ctxPath, "/ask-quantity", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button("", bundle.getString("continue.shopping"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
+    sb.append(button(empty, bundle.getString("continue.shopping"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId), bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
+    sb.append(button(openCartBtnVal, bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(UserInputUtils.json(), bundle.getString("proceed.to.checkout"), requestParams.getPluginParams(), ctxPath, "/ask-phone", urlResolver));
+    sb.append(button(empty, bundle.getString("proceed.to.checkout"), requestParams.getPluginParams(), ctxPath, "/ask-phone", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     sb.append(buttonExit(requestParams.getPluginParams(), ctxPath, urlResolver));

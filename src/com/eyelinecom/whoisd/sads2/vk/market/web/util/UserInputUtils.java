@@ -39,43 +39,8 @@ public class UserInputUtils {
     return userId + "-" + System.currentTimeMillis();
   }
 
-  public static String json() throws IOException {
+  public static String empty() throws IOException {
     return "%7B%7D";
   }
 
-  public static String json(Integer categoryId) throws IOException {
-    UserInput.Builder builder = new UserInput.Builder();
-    UserInput userInput = builder.category(categoryId).build();
-    return toJsonAndEncode(userInput);
-  }
-
-  public static String json(String messageId) throws IOException {
-    UserInput.Builder builder = new UserInput.Builder();
-    UserInput userInput = builder.message(messageId).build();
-    return toJsonAndEncode(userInput);
-  }
-
-  public static String json(Integer categoryId, Integer itemId, String messageId) throws IOException {
-    UserInput.Builder builder = new UserInput.Builder();
-    UserInput userInput = builder.category(categoryId).item(itemId).message(messageId).build();
-    return toJsonAndEncode(userInput);
-  }
-
-  public static String json(Integer categoryId, Integer itemId, String messageId, Integer extraPhotoId) throws IOException {
-    UserInput.Builder builder = new UserInput.Builder();
-    UserInput userInput = builder.category(categoryId).item(itemId).message(messageId).photo(extraPhotoId).build();
-    return toJsonAndEncode(userInput);
-  }
-
-  public static String json(Integer categoryId, Integer itemId, String messageId, Boolean fromInlineButton) throws IOException {
-    UserInput.Builder builder = new UserInput.Builder();
-    UserInput userInput = builder.category(categoryId).item(itemId).message(messageId).inline(fromInlineButton).build();
-    return toJsonAndEncode(userInput);
-  }
-
-  public static String json(Integer categoryId, Integer itemId, String messageId, Integer extraPhotoId, Integer quantity) throws IOException {
-    UserInput.Builder builder = new UserInput.Builder();
-    UserInput userInput = builder.category(categoryId).item(itemId).message(messageId).photo(extraPhotoId).quantity(quantity).build();
-    return toJsonAndEncode(userInput);
-  }
 }

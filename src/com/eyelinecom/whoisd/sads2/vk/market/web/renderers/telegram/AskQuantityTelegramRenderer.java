@@ -2,6 +2,7 @@ package com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram;
 
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.ItemDetailed;
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.Price;
+import com.eyelinecom.whoisd.sads2.vk.market.services.model.UserInput;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
@@ -53,6 +54,9 @@ public class AskQuantityTelegramRenderer extends Renderer {
   private String getAskQuantityPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
 
+    String backBtnVal = UserInputUtils.toJsonAndEncode(new UserInput.Builder().category(categoryId).item(itemId).message(messageId).build());
+    UserInput input = new UserInput.Builder().category(categoryId).item(itemId).message(messageId).photo(extraPhotoId).build();
+
     sb.append(pageStart((getEditablePageAttrs(messageId, itemId != null))));
     sb.append(divStart());
     if (!extraPhotoUrls.isEmpty()) {
@@ -69,24 +73,29 @@ public class AskQuantityTelegramRenderer extends Renderer {
     sb.append(br());
     sb.append(divEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId, extraPhotoId, 1), "1", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId, extraPhotoId, 2), "2", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId, extraPhotoId, 3), "3", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId, extraPhotoId, 4), "4", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId, extraPhotoId, 5), "5", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
+    sb.append(button(createQuantityBtnVal(input, 1), "1", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
+    sb.append(button(createQuantityBtnVal(input, 2), "2", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
+    sb.append(button(createQuantityBtnVal(input, 3), "3", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
+    sb.append(button(createQuantityBtnVal(input, 4), "4", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
+    sb.append(button(createQuantityBtnVal(input, 5), "5", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId, extraPhotoId, 10), "10", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId, extraPhotoId, 25), "25", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId, extraPhotoId, 50), "50", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId, extraPhotoId, 100), "100", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
+    sb.append(button(createQuantityBtnVal(input, 10), "10", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
+    sb.append(button(createQuantityBtnVal(input, 25), "25", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
+    sb.append(button(createQuantityBtnVal(input, 50), "50", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
+    sb.append(button(createQuantityBtnVal(input, 100), "100", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(UserInputUtils.json(categoryId, itemId, messageId), bundle.getString("back.to.category.items"), requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
+    sb.append(button(backBtnVal, bundle.getString("back.to.category.items"), requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
     sb.append(buttonsEnd());
     sb.append(pageEnd());
 
     return sb.toString();
+  }
+
+  private static String createQuantityBtnVal(UserInput input, Integer quantity) throws IOException {
+    input.setQuantity(quantity);
+    return UserInputUtils.toJsonAndEncode(input);
   }
 
 }

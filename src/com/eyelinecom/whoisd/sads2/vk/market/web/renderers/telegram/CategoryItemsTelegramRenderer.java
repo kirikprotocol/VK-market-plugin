@@ -1,6 +1,7 @@
 package com.eyelinecom.whoisd.sads2.vk.market.web.renderers.telegram;
 
 import com.eyelinecom.whoisd.sads2.vk.market.services.market.Item;
+import com.eyelinecom.whoisd.sads2.vk.market.services.model.UserInput;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
@@ -42,6 +43,12 @@ public class CategoryItemsTelegramRenderer extends Renderer {
   private String getItemPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
 
+    UserInput input = new UserInput.Builder().message(messageId).build();
+
+    String currentItemBtnVal = createBtnVal(input, navigation.currItem.getCategory().getId(), navigation.currItem.getId());
+    String prevItemBtnVal = createBtnVal(input, navigation.prevItem.getCategory().getId(), navigation.prevItem.getId());
+    String nextItemBtnVal = createBtnVal(input, navigation.nextItem.getCategory().getId(), navigation.nextItem.getId());
+
     sb.append(pageStart(getEditablePageAttrs(messageId, itemId != null)));
     sb.append(divStart());
     sb.append(navigation.currItem.getMainPhotoUrl());
@@ -52,16 +59,16 @@ public class CategoryItemsTelegramRenderer extends Renderer {
     sb.append(br());
     sb.append(divEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(UserInputUtils.json(navigation.prevItem.getCategory().getId(), navigation.prevItem.getId(), messageId), "&lt;", requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
-    sb.append(button(UserInputUtils.json(navigation.currItem.getCategory().getId(), navigation.currItem.getId(), messageId), bundle.getString("item.details.btn"), requestParams.getPluginParams(), ctxPath, "/item-details", urlResolver));
-    sb.append(button(UserInputUtils.json(navigation.currItem.getCategory().getId(), navigation.currItem.getId(), messageId, 0), bundle.getString("add.to.cart.btn"), requestParams.getPluginParams(), ctxPath, "/ask-quantity", urlResolver));
-    sb.append(button(UserInputUtils.json(navigation.nextItem.getCategory().getId(), navigation.nextItem.getId(), messageId), "&gt;", requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
+    sb.append(button(prevItemBtnVal, "&lt;", requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
+    sb.append(button(currentItemBtnVal, bundle.getString("item.details.btn"), requestParams.getPluginParams(), ctxPath, "/item-details", urlResolver));
+    sb.append(button(currentItemBtnVal, bundle.getString("add.to.cart.btn"), requestParams.getPluginParams(), ctxPath, "/ask-quantity", urlResolver));
+    sb.append(button(nextItemBtnVal, "&gt;", requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     sb.append(button("", bundle.getString("change.category"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(UserInputUtils.json(navigation.currItem.getCategory().getId(), navigation.currItem.getId(), messageId), bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
+    sb.append(button(currentItemBtnVal, bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     sb.append(buttonExit(requestParams.getPluginParams(), ctxPath, urlResolver));
@@ -71,7 +78,12 @@ public class CategoryItemsTelegramRenderer extends Renderer {
     return sb.toString();
   }
 
-  //TODO: duplication
+  private static String createBtnVal(UserInput input, Integer categoryId, Integer itemId) throws IOException {
+    input.setCategoryId(categoryId);
+    input.setItemId(itemId);
+    return UserInputUtils.toJsonAndEncode(input);
+  }
+
   private class Navigation {
 
     private final Item prevItem;

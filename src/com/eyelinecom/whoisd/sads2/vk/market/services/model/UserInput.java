@@ -10,6 +10,7 @@ public class UserInput {
   private Integer extraPhotoId;
   private Integer quantity;
   private Boolean fromInlineButton;
+  private Integer cartListSection;
 
   public UserInput() {
   }
@@ -38,6 +39,10 @@ public class UserInput {
     return fromInlineButton;
   }
 
+  public Integer getCartListSection() {
+    return cartListSection;
+  }
+
   public void setCategoryId(Integer categoryId) {
     this.categoryId = categoryId;
   }
@@ -60,6 +65,10 @@ public class UserInput {
 
   public void setFromInlineButton(Boolean fromInlineButton) {
     this.fromInlineButton = fromInlineButton;
+  }
+
+  public void setCartListSection(Integer cartListSection) {
+    this.cartListSection = cartListSection;
   }
 
   public static class Builder {
@@ -92,6 +101,11 @@ public class UserInput {
 
     public Builder inline(Boolean inline) {
       userInput.setFromInlineButton(inline);
+      return this;
+    }
+
+    public Builder cartSection(Integer section) {
+      userInput.setCartListSection(section);
       return this;
     }
 
