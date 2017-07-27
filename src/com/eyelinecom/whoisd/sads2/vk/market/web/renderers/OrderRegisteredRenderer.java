@@ -31,6 +31,8 @@ public class OrderRegisteredRenderer extends Renderer {
     String askPhoneNumber = getAskPhoneNumberPage(ctxPath, requestParams, urlResolver);
 
     sendResponse(response, requestParams, Arrays.asList(askPhoneNumber));
+
+    //TODO: redirect to exit
   }
 
   private String getAskPhoneNumberPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
