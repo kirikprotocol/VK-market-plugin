@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class OrderRegisteredRenderer extends Renderer {
 
-  private static final int PARTITION_SIZE = 3;
+  private static final int PARTITION_SIZE = 10;
 
   private final ResourceBundle bundle;
   private final OrderDetailed orderDetailed;
