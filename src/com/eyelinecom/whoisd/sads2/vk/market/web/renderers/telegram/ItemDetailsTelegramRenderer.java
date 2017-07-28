@@ -101,7 +101,6 @@ public class ItemDetailsTelegramRenderer extends Renderer {
     return UserInputUtils.toJsonAndEncode(input);
   }
 
-  //TODO: unify
   private class Navigation {
 
     private final int prevExtraPhotoId;

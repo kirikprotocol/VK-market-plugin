@@ -5,6 +5,7 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.model.UserInput;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
+import com.eyelinecom.whoisd.sads2.vk.market.web.util.NavigationSections;
 import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputUtils;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,8 +25,7 @@ public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
   private final String messageId;
   private final Integer itemId;
   private final Integer categoryId;
-  private final Integer cartListSection;
-  private final Navigation navigation;
+  private final NavigationSections navigation;
 
   public ChooseItemInCartForDeletingTelegramRenderer(Locale locale, List<Item> itemDescriptions, String messageId, Integer categoryId, Integer itemId, Integer cartListSection) {
     super(locale);
@@ -34,8 +34,7 @@ public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
     this.messageId = messageId;
     this.categoryId = categoryId;
     this.itemId = itemId;
-    this.cartListSection = cartListSection;
-    this.navigation = new Navigation();
+    this.navigation = new NavigationSections(cartListSection, itemDescriptions.size(), PARTITION_SIZE);
   }
 
   @Override
@@ -101,8 +100,8 @@ public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
 
   private void renderAllParts(StringBuilder sb, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     UserInput input = new UserInput.Builder().category(categoryId).item(itemId).message(messageId).build();
-    String prevSectionBtnVal = createSectionBtnVal(input, navigation.prevSection);
-    String nextSectionBtnVal = createSectionBtnVal(input, navigation.nextSection);
+    String prevSectionBtnVal = createSectionBtnVal(input, navigation.getPrevSection());
+    String nextSectionBtnVal = createSectionBtnVal(input, navigation.getNextSection());
 
     int itemsSize = itemDescriptions.size();
     List<List<Item>> partitions = new LinkedList<>();
@@ -110,7 +109,7 @@ public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
       partitions.add(itemDescriptions.subList(i, Math.min(i + PARTITION_SIZE, itemsSize)));
     }
 
-    List<Item> part = partitions.get(navigation.currSection);
+    List<Item> part = partitions.get(navigation.getCurrSection());
     renderOnePart(part, sb, ctxPath, requestParams, urlResolver);
 
     sb.append(buttonsStart(getInlineButtonsAttrs()));
@@ -122,39 +121,6 @@ public class ChooseItemInCartForDeletingTelegramRenderer extends Renderer {
   private static String createSectionBtnVal(UserInput input, Integer cartSection) throws IOException {
     input.setCartListSection(cartSection);
     return UserInputUtils.toJsonAndEncode(input);
-  }
-
-  //TODO: unify
-  private class Navigation {
-
-    private final int prevSection;
-    private final int currSection;
-    private final int nextSection;
-    private final int sectionsCount;
-
-    private Navigation() {
-      sectionsCount = findSectionsCount();
-      currSection = findCurrentExtraPhotoId();
-      prevSection = currSection == 0 ? sectionsCount - 1 : currSection - 1;
-      nextSection = currSection == sectionsCount - 1 ? 0 : currSection + 1;
-    }
-
-    private int findCurrentExtraPhotoId() {
-      if(cartListSection == null)
-        return 0;
-
-      return cartListSection;
-    }
-
-    private int findSectionsCount() {
-      int modResult = itemDescriptions.size() % PARTITION_SIZE;
-      int divResult = itemDescriptions.size() / PARTITION_SIZE;
-
-      if (modResult == 0)
-        return divResult;
-
-      return divResult + 1;
-    }
   }
 
 }

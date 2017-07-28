@@ -6,6 +6,7 @@ import com.eyelinecom.whoisd.sads2.vk.market.services.model.UserInput;
 import com.eyelinecom.whoisd.sads2.vk.market.services.shorturl.UrlResolver;
 import com.eyelinecom.whoisd.sads2.vk.market.web.renderers.Renderer;
 import com.eyelinecom.whoisd.sads2.vk.market.web.servlets.RequestParameters;
+import com.eyelinecom.whoisd.sads2.vk.market.web.util.NavigationSections;
 import com.eyelinecom.whoisd.sads2.vk.market.web.util.PriceUtils;
 import com.eyelinecom.whoisd.sads2.vk.market.web.util.UserInputUtils;
 
@@ -28,8 +29,7 @@ public class CartContentRenderer extends Renderer {
   private final Integer categoryId;
   private final Integer itemId;
   private final Boolean fromInlineButton;
-  private final Integer cartListSection;
-  private final Navigation navigation;
+  private final NavigationSections navigation;
 
   public CartContentRenderer(Locale locale, List<Item> itemDescriptions, Map<Integer, Integer> itemQuantities, String messageId,
                              Integer categoryId, Integer itemId, Boolean fromInlineButton, Integer cartListSection) {
@@ -42,8 +42,7 @@ public class CartContentRenderer extends Renderer {
     this.itemQuantities = itemQuantities;
     this.totalCost = PriceUtils.getTotalCost(itemDescriptions, itemQuantities);
     this.fromInlineButton = fromInlineButton;
-    this.cartListSection = cartListSection;
-    this.navigation = new Navigation();
+    this.navigation = new NavigationSections(cartListSection, itemDescriptions.size(), PARTITION_SIZE);
   }
 
   @Override
@@ -121,8 +120,8 @@ public class CartContentRenderer extends Renderer {
 
   private void renderSection(StringBuilder sb, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     UserInput input = new UserInput.Builder().category(categoryId).item(itemId).message(messageId).inline(true).build();
-    String prevSectionBtnVal = createSectionBtnVal(input, navigation.prevSection);
-    String nextSectionBtnVal = createSectionBtnVal(input, navigation.nextSection);
+    String prevSectionBtnVal = createSectionBtnVal(input, navigation.getPrevSection());
+    String nextSectionBtnVal = createSectionBtnVal(input, navigation.getNextSection());
 
     int itemsSize = itemDescriptions.size();
     List<List<Item>> partitions = new LinkedList<>();
@@ -130,14 +129,14 @@ public class CartContentRenderer extends Renderer {
       partitions.add(itemDescriptions.subList(i, Math.min(i + PARTITION_SIZE, itemsSize)));
     }
 
-    int countPartition = navigation.currSection * PARTITION_SIZE;
+    int countPartition = navigation.getCurrSection() * PARTITION_SIZE;
 
-    if (navigation.currSection != 0 && navigation.currSection < navigation.sectionsCount - 1){
+    if (navigation.getCurrSection() != 0 && navigation.getCurrSection() < navigation.getSectionsCount() - 1){
       sb.append("...");
       sb.append(br());
     }
 
-    List<Item> part = partitions.get(navigation.currSection);
+    List<Item> part = partitions.get(navigation.getCurrSection());
     for (Item item : part) {
       Price price = item.getPrice();
       sb.append(++countPartition).append(". ").append(item.getName()).append(" x ").append(itemQuantities.get(item.getId())).append(", ")
@@ -145,7 +144,7 @@ public class CartContentRenderer extends Renderer {
       sb.append(br());
     }
 
-    if (navigation.currSection != navigation.sectionsCount - 1){
+    if (navigation.getCurrSection() != navigation.getSectionsCount() - 1){
       sb.append("...");
       sb.append(br());
     }
@@ -158,36 +157,4 @@ public class CartContentRenderer extends Renderer {
     sb.append(buttonsEnd());
   }
 
-  //TODO: unify
-  private class Navigation {
-
-    private final int prevSection;
-    private final int currSection;
-    private final int nextSection;
-    private final int sectionsCount;
-
-    private Navigation() {
-      sectionsCount = findSectionsCount();
-      currSection = findCurrentExtraPhotoId();
-      prevSection = currSection == 0 ? sectionsCount - 1 : currSection - 1;
-      nextSection = currSection == sectionsCount - 1 ? 0 : currSection + 1;
-    }
-
-    private int findCurrentExtraPhotoId() {
-      if(cartListSection == null)
-        return 0;
-
-      return cartListSection;
-    }
-
-    private int findSectionsCount() {
-      int modResult = itemDescriptions.size() % PARTITION_SIZE;
-      int divResult = itemDescriptions.size() / PARTITION_SIZE;
-
-      if (modResult == 0)
-        return divResult;
-
-      return divResult + 1;
-    }
-  }
 }
