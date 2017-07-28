@@ -52,6 +52,7 @@ public class AddToCartTelegramRenderer extends Renderer {
     StringBuilder sb = new StringBuilder();
 
     String addMoreBtnVal = UserInputUtils.toJsonAndEncode(new UserInput.Builder().category(categoryId).item(itemId).message(messageId).photo(extraPhotoId).build());
+    String backToCategoryBtnVal = UserInputUtils.toJsonAndEncode(new UserInput.Builder().category(categoryId).item(itemId).message(messageId).build());
     String openCartBtnVal = UserInputUtils.toJsonAndEncode(new UserInput.Builder().category(categoryId).item(itemId).message(messageId).build());
     String empty = UserInputUtils.empty();
 
@@ -67,12 +68,11 @@ public class AddToCartTelegramRenderer extends Renderer {
     sb.append(button(addMoreBtnVal, bundle.getString("add.more"), requestParams.getPluginParams(), ctxPath, "/ask-quantity", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
-    sb.append(button(empty, bundle.getString("continue.shopping"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
+    sb.append(button(backToCategoryBtnVal, bundle.getString("back.to.current.category"), requestParams.getPluginParams(), ctxPath, "/category", urlResolver));
+    sb.append(button(empty, bundle.getString("another.category"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     sb.append(button(openCartBtnVal, bundle.getString("open.cart"), requestParams.getPluginParams(), ctxPath, "/cart", urlResolver));
-    sb.append(buttonsEnd());
-    sb.append(buttonsStart(getInlineButtonsAttrs()));
     sb.append(button(empty, bundle.getString("proceed.to.checkout"), requestParams.getPluginParams(), ctxPath, "/ask-phone", urlResolver));
     sb.append(buttonsEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));

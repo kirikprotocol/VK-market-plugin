@@ -40,11 +40,11 @@ public class OrderRegisteredRenderer extends Renderer {
     result.add(getBasicInfoPage());
 
     for (int i = 0, partitionCounter = 0; i < itemsCount; i += PARTITION_SIZE, partitionCounter++) {
-      List<OrderItemDetailed> part = items.subList(i, Math.min(i + PARTITION_SIZE, itemsCount));
-      result.add(getOrderListPartitionPage(part, partitionCounter));
+      int tillIndex = Math.min(i + PARTITION_SIZE, itemsCount);
+      List<OrderItemDetailed> part = items.subList(i, tillIndex);
+      result.add(getOrderListPartitionPage(part, partitionCounter, tillIndex == itemsCount, ctxPath, requestParams, urlResolver));
     }
 
-    result.add(getFinalKeyBoardPage(ctxPath, requestParams, urlResolver));
     return result;
   }
 
@@ -66,20 +66,14 @@ public class OrderRegisteredRenderer extends Renderer {
     return sb.toString();
   }
 
-  private String getOrderListPartitionPage(List<OrderItemDetailed> partition, int partitionCounter) throws IOException {
+  private String getOrderListPartitionPage(List<OrderItemDetailed> partition, int partitionCounter, boolean isFinal, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
     sb.append(pageStart());
     sb.append(divStart());
     orderList(partition, partitionCounter * PARTITION_SIZE, sb);
     sb.append(divEnd());
-    sb.append(pageEnd());
-    return sb.toString();
-  }
-
-  private String getFinalKeyBoardPage(String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
-    StringBuilder sb = new StringBuilder();
-    sb.append(pageStart());
-    exitButtons(sb, ctxPath, requestParams, urlResolver);
+    if (isFinal)
+      exitButtons(sb, ctxPath, requestParams, urlResolver);
     sb.append(pageEnd());
     return sb.toString();
   }
@@ -87,9 +81,7 @@ public class OrderRegisteredRenderer extends Renderer {
   private void exitButtons(StringBuilder sb, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     sb.append(buttonsStart());
     sb.append(button("", bundle.getString("continue.shopping"), requestParams.getPluginParams(), ctxPath, "/", urlResolver));
-    sb.append(buttonExit(requestParams.getPluginParams(), ctxPath));
-    //TODO: во время пуша через сценарий xmlpush
-    //Error on line 1 of document : The reference to entity "sver" must end with the ';' delimiter. Nested exception: The reference to entity "sver" must end with the ';' delimiter.
+    sb.append("<link pageId=\"" + requestParams.getExitUrl().replaceAll("&", "&amp;") + "\">" + bundle.getString("exit.btn") + "</link>");
     sb.append(buttonsEnd());
   }
 
