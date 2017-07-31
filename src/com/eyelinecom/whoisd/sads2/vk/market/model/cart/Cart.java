@@ -23,7 +23,7 @@ public class Cart {
   private Integer id;
 
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "cart")
-  private List<CartItem> items;
+  private List<CartItem> items = new LinkedList<>();
 
   @OneToOne(fetch = FetchType.EAGER, mappedBy = "cart")
   private User user;

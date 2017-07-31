@@ -59,18 +59,13 @@ public class AskQuantityTelegramRenderer extends Renderer {
 
     sb.append(pageStart((getEditablePageAttrs(messageId, itemId != null))));
     sb.append(divStart());
-    if (!extraPhotoUrls.isEmpty()) {
-      sb.append(extraPhotoUrls.get(extraPhotoId == null ? 0 : extraPhotoId));
-    }
     sb.append(br());
     sb.append(bStart()).append(name).append(bEnd());
     sb.append(br());
-    if (extraPhotoId != null) {
-      sb.append(description);
-      sb.append(br());
-    }
     sb.append(price.getText());
     sb.append(br());
+    sb.append(br());
+    sb.append(bundle.getString("ask.quantity.text"));
     sb.append(divEnd());
     sb.append(buttonsStart(getInlineButtonsAttrs()));
     sb.append(button(createQuantityBtnVal(input, 1), "1", requestParams.getPluginParams(), ctxPath, "/add-to-cart", urlResolver));

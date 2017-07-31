@@ -6,6 +6,7 @@ import com.eyelinecom.whoisd.sads2.vk.market.model.user.User;
 
 import javax.persistence.*;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,7 +30,7 @@ public class Order {
   private String merchantEmail;
 
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "order")
-  private List<OrderItem> items;
+  private List<OrderItem> items = new LinkedList<>();
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id", unique = false, nullable = false)
