@@ -29,14 +29,20 @@ public class NotSupportedProtocolRenderer extends Renderer {
   public void render(HttpServletResponse response, String ctxPath, RequestParameters requestParams, UrlResolver urlResolver) throws IOException {
     StringBuilder sb = new StringBuilder();
 
+    String text = MessageFormat.format(bundle.getString("protocol.not.supported.message"), protocol, Protocol.getValuesString());
+
     sb.append(pageStart());
     sb.append(divStart());
-    sb.append(MessageFormat.format(bundle.getString("protocol.not.supported.message"), protocol, Protocol.getValuesString()));
+    sb.append("<select navigationId=\"submit\" title=\"").append(text).append("\" name=\"answer\">");
+    sb.append("<option accesskey=\"1\" value=\"leave\" selected=\"true\">");
+    sb.append(bundle.getString("exit.btn"));
+    sb.append("</option>");
+    sb.append("</select>");
     sb.append(br());
     sb.append(divEnd());
-    sb.append(buttonsStart());
-    sb.append("<link pageId=\"" + requestParams.getEventRefererPageUrl().replaceAll("&", "&amp;") + "\">" + bundle.getString("exit.btn") + "</link>");
-    sb.append(buttonsEnd());
+    sb.append("<navigation id=\"submit\">");
+    sb.append("<link pageId=\"").append(requestParams.getEventRefererPageUrl().replaceAll("&", "&amp;")).append("\"/>");
+    sb.append("</navigation>");
     sb.append(pageEnd());
 
     sendResponse(response, requestParams, Collections.singletonList(sb.toString()));
