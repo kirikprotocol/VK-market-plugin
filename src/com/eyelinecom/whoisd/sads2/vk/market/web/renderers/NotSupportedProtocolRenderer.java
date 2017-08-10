@@ -35,7 +35,7 @@ public class NotSupportedProtocolRenderer extends Renderer {
     sb.append(br());
     sb.append(divEnd());
     sb.append(buttonsStart());
-    sb.append(buttonExit(requestParams.getPluginParams(), ctxPath));
+    sb.append("<link pageId=\"" + requestParams.getEventRefererPageUrl().replaceAll("&", "&amp;") + "\">" + bundle.getString("exit.btn") + "</link>");
     sb.append(buttonsEnd());
     sb.append(pageEnd());
 

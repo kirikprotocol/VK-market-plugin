@@ -21,7 +21,7 @@ public class RequestParameters {
   private final String exitUrl;
   private final String merchantEmail;
   private final String serviceId;
-
+  private final String eventRefererPageUrl;
 
   RequestParameters(HttpServletRequest request) throws HttpServletRequestException {
     userId = getUserId(request);
@@ -33,6 +33,7 @@ public class RequestParameters {
     exitUrl = getRequiredParameter(request, "exit_url");
     merchantEmail = getRequiredParameter(request, "merchant_email");
     serviceId = getRequiredParameter(request, "service");
+    eventRefererPageUrl = getRequiredParameter(request, "event.referer");
   }
 
   public String getUserId() {
@@ -71,6 +72,10 @@ public class RequestParameters {
     return serviceId;
   }
 
+  public String getEventRefererPageUrl() {
+    return eventRefererPageUrl;
+  }
+
   public Map<String, String> getPluginParams() {
     Map<String, String> pluginParams = new HashMap<>();
 
@@ -80,6 +85,7 @@ public class RequestParameters {
     pluginParams.put("service", serviceId);
     pluginParams.put("locale", locale.getLanguage());
     pluginParams.put("exit_url", exitUrl);
+    pluginParams.put("event.referer", eventRefererPageUrl);
 
     return pluginParams;
   }

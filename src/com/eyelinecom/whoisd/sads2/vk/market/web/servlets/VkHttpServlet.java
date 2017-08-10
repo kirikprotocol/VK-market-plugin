@@ -37,8 +37,11 @@ abstract class VkHttpServlet extends HttpServlet {
     try {
       RequestParameters params = new RequestParameters(request);
       Protocol protocol = Protocol.getValue(params.getProtocol().toUpperCase());
+      String requestUri = request.getRequestURI();
+      boolean isExit = requestUri.endsWith("exit");
+      boolean isNotSupportedProtocol = protocol == null;
 
-      if(protocol == null) {
+      if (isNotSupportedProtocol && !isExit) {
         Renderer renderer = new NotSupportedProtocolRenderer(params.getProtocol().toUpperCase(), params.getLocale());
         renderer.render(response, request.getContextPath(), params, null);
         return;
