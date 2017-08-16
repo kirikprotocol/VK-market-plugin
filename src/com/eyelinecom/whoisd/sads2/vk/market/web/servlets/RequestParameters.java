@@ -33,7 +33,9 @@ public class RequestParameters {
     exitUrl = getRequiredParameter(request, "exit_url");
     merchantEmail = getRequiredParameter(request, "merchant_email");
     serviceId = getRequiredParameter(request, "service");
-    eventRefererPageUrl = getRequiredParameter(request, "event.referer");
+
+    final String url = request.getParameter("event.referer");
+    eventRefererPageUrl = url == null || url.isEmpty() ? exitUrl : url;
   }
 
   public String getUserId() {
