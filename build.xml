@@ -1,5 +1,7 @@
 <project name="sads-vk-market" default="distr" xmlns:ivy="antlib:org.apache.ivy.ant">
 
+  <property file="build.properties"/>
+
   <property name="app.name"        value="sads-vk-market"/>
 
   <property name="src.dir"         value="src"/>
@@ -10,8 +12,6 @@
   <property name="build.dir"       value=".build"/>
   <property name="distr.dir"       value="${build.dir}/distr"/>
   <property name="classes.dir"     value="${build.dir}/classes"/>
-
-  <property name="release.version" value="dev"/>
 
   <path id="classpath">
     <fileset dir="${lib.dir}" includes="*.jar"/>
@@ -35,6 +35,11 @@
     <ivy:retrieve type="jar,bundle" pattern="${libdev.dir}/[artifact]-[revision].[ext]" conf="dev" haltonfailure="true"/>
   </target>
 
+  <target name="liquibase">
+    <delete file="${distr.dir}/liquibase.zip"/>
+    <zip destfile="${distr.dir}/liquibase.zip" basedir="db/liquibase"/>
+  </target>
+
   <target name="compile" description="compile sources" depends="resolve">
     <delete dir="${classes.dir}" failonerror="false"/>
     <mkdir dir="${classes.dir}"/>
@@ -51,7 +56,7 @@
     </copy>
   </target>
 
-  <target name="distr" description="build web-app" depends="compile">
+  <target name="distr" description="build web-app" depends="resolve, compile, liquibase">
     <delete file="${distr.dir}/${app.name}.war" failonerror="false"/>
     <mkdir dir="${distr.dir}"/>
 
